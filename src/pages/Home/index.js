@@ -15,7 +15,6 @@ export default function Home() {
   const [musicList, setMusicList] = useState(null);
   const [isLoadingSearch, setIsLoadingSearch] = useState(true);
 
-
   const updateMusics = async () => {
     setIsLoadingSearch(true);
     let musics = await getMusics(search);

@@ -2,16 +2,17 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   home: {
+    width: '100%',
     flex: 1,
     backgroundColor: '#141414',
   },
   headerContainer: {
     width: '94%',
+    marginTop: 70,
     marginHorizontal: '3%',
     marginBottom: 40,
   },
   searchInputLabel: {
-    marginTop: 70,
     marginBottom: 10,
 
     color: 'white',
