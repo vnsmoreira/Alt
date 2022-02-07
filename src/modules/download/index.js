@@ -1,11 +1,9 @@
 import { Alert } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
-import { Buffer } from 'buffer';
-import { downloadMusic } from '../../services/apis/downloadMusic';
 import { formatTitle } from '../../utils';
 
-const directoryPath = FileSystem.cacheDirectory + 'Alt/';
+const directoryPath = FileSystem.documentDirectory + 'Alt/';
 
 const ensureDirectoryExists = async () => {
   const directory = await FileSystem.getInfoAsync(directoryPath);
@@ -50,21 +48,31 @@ const saveFile = async fileUri => {
   }
 };
 
+const updateProgress = (progressEvent, setProgress) => {
+  const total = progressEvent.totalBytesExpectedToWrite;
+  const loaded = progressEvent.totalBytesWritten;
+  const percentage = parseInt((loaded / total) * 100);
+
+  setProgress(percentage);
+};
+
 export const downloadFile = async (id, title, setProgress) => {
   const outputTitle = formatTitle(title);
   const fileUri = `${directoryPath}${outputTitle}.m4a`;
+  const baseURL = `http://192.168.15.127:3000/download/`;
 
   await ensureDirectoryExists();
 
-  /* tentar criar sem o axios, usando downlaod resumable */
+  const downloadResumable = FileSystem.createDownloadResumable(
+    baseURL + id,
+    fileUri,
+    {},
+    progress => updateProgress(progress, setProgress)
+  );
+
   try {
-    const audio = await downloadMusic(id, setProgress);
-
-    await FileSystem.writeAsStringAsync(fileUri, Buffer.from(audio, 'binary').toString('base64'), {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-
-    await saveFile(fileUri);
+    const { uri } = await downloadResumable.downloadAsync();
+    await saveFile(uri);
   } catch (error) {
     console.log(error);
   }
