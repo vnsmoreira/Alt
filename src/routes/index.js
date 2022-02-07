@@ -59,5 +59,6 @@ const styles = StyleSheet.create({
   tabBarLabelStyle: {
     color: 'gray',
     marginBottom: 5,
+    fontFamily: 'Lato_700Bold',
   },
 });
