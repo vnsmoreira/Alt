@@ -28,7 +28,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tempest.alt",
-      "buildNumber": "0.8.0"
+      "buildNumber": "0.8.0",
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"]
+      }
     },
     "android": {
       "package": "com.tempest.alt",
