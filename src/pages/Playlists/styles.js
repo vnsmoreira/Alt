@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
     marginTop: 70,
     marginHorizontal: '3%',
     marginBottom: 40,
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'space-between'
   },
   headerTitle: {
     marginBottom: 10,
@@ -22,6 +25,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato_700Bold',
     fontWeight: 'bold',
     textTransform: 'capitalize',
+
+
   },
 });
 
