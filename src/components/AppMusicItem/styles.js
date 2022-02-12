@@ -44,21 +44,19 @@ const styles = StyleSheet.create({
     color: 'white',
 
     fontFamily: 'Lato_700Bold',
-   /*  textTransform: 'uppercase', */
   },
-  musicInfo:{
-    flexDirection:'row',
-    alignItems:'center',
-    margin:0,
+  musicInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 0,
   },
   musicAuthor: {
     marginLeft: 5,
 
     color: 'rgb(180,180,180)',
 
-    fontSize:13,
+    fontSize: 13,
     fontFamily: 'Lato_400Regular',
-    
   },
   musicDuration: {
     marginTop: 2,
