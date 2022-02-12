@@ -1,11 +1,12 @@
 import { Alert } from 'react-native';
 import axios from 'axios';
+import { baseURL, searchEndpoint } from './index';
 
 export const getMusics = async query => {
-  query = query ? query : 'drake';
+  query = query ? query : 'russ';
 
   try {
-    const url = `http://192.168.15.127:3000/search/${query}`;
+    const url = baseURL + searchEndpoint + query;
     const response = await axios.get(url, {
       timeout: 2000,
     });
