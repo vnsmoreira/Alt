@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import styles from './styles';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
 import { StorageContext } from '../../contexts/storage';
 import MusicList from '../../components/AppMusicList';
