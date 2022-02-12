@@ -7,6 +7,7 @@ import { downloadFile } from '../../modules/download';
 import { PlayerContext } from '../../contexts/player';
 import { StorageContext } from '../../contexts/storage';
 import { baseURL, downloadEndpoint } from '../../services/apis/index.js';
+import * as realm from '../../services/realm';
 
 const MusicItem = ({ item }) => {
   const [downloadProgress, setDownloadProgress] = useState(0);
@@ -91,7 +92,8 @@ const MusicItem = ({ item }) => {
 
       if (saved) {
         const audioInfo = getAudioInfo(item, audioLocalUri);
-        await AsyncStorage.saveAudio(id, audioInfo);
+        
+        await realm.saveAudio(audioInfo);
       }
     } catch (error) {
       console.log(error);
