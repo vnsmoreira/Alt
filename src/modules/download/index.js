@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
-import { formatTitle } from '../../utils';
+import { baseURL, downloadEndpoint } from '../../services/apis/index';
 
 const directoryPath = FileSystem.documentDirectory + 'Alt/';
 
@@ -31,7 +31,7 @@ const getPermissions = async () => {
   }
 };
 
-const saveFile = async fileUri => {
+const saveFile = async (fileUri, setDownloaded) => {
   try {
     await getPermissions();
 
@@ -43,8 +43,17 @@ const saveFile = async fileUri => {
     } else {
       await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
     }
+
+    const rootAlbum = await MediaLibrary.getAlbumAsync('Alt');
+    const { assets } = await MediaLibrary.getAssetsAsync({ album: rootAlbum, mediaType: 'audio' });
+    const currentAsset = assets.find(assetItem => assetItem.filename == asset.filename);
+
+    setDownloaded(true);
+    return { saved: true, audioLocalUri: currentAsset.uri };
   } catch (error) {
     console.log(error);
+    setDownloaded(false);
+    return { saved: false, audioLocalUri: '' };
   }
 };
 
@@ -56,23 +65,21 @@ const updateProgress = (progressEvent, setProgress) => {
   setProgress(percentage);
 };
 
-export const downloadFile = async (id, title, setProgress) => {
-  const outputTitle = formatTitle(title);
-  const fileUri = `${directoryPath}${outputTitle}.m4a`;
-  const baseURL = `http://192.168.15.127:3000/download/`;
-
-  await ensureDirectoryExists();
-
-  const downloadResumable = FileSystem.createDownloadResumable(
-    baseURL + id,
-    fileUri,
-    {},
-    progress => updateProgress(progress, setProgress)
-  );
+export const downloadFile = async (id, setProgress, setDownloaded) => {
+  const fileUri = `${directoryPath}${id}.m4a`;
+  const remoteUrl = baseURL + downloadEndpoint + id;
 
   try {
+    await ensureDirectoryExists();
+
+    const downloadResumable = FileSystem.createDownloadResumable(remoteUrl, fileUri, {}, progress =>
+      updateProgress(progress, setProgress)
+    );
+
     const { uri } = await downloadResumable.downloadAsync();
-    await saveFile(uri);
+    const isSaved = await saveFile(uri, setDownloaded);
+
+    return isSaved;
   } catch (error) {
     console.log(error);
   }
