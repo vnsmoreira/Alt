@@ -5,7 +5,6 @@ import { AntDesign, SimpleLineIcons, MaterialIcons } from '@expo/vector-icons';
 import ProgressCircle from 'react-native-progress-circle';
 import { downloadFile } from '../../modules/download';
 import { PlayerContext } from '../../contexts/player';
-import { StorageContext } from '../../contexts/storage';
 import { baseURL, downloadEndpoint } from '../../services/apis/index.js';
 import * as realm from '../../services/realm';
 
@@ -16,7 +15,6 @@ const MusicItem = ({ item }) => {
   const [isPlayAudioFunctionBeingExecuted, setIsPlayAudioFunctionBeingExecuted] = useState(false);
   const [uri, setUri] = useState('');
   const { player, loaded, loading, playing, currentAudioId } = useContext(PlayerContext);
-  const AsyncStorage = useContext(StorageContext);
 
   const id = item.id;
   const title = item.title;
@@ -33,11 +31,10 @@ const MusicItem = ({ item }) => {
     let localUri = '';
 
     try {
-      const { exists } = await AsyncStorage.checkAudio(item.id);
-      if (exists) {
-        const currentAudio = AsyncStorage.storage[item.id];
+      const audio = await realm.getAudio(item.id);
 
-        localUri = currentAudio.uri;
+      if (audio) {
+        localUri = audio.uri;
         setIsDownloaded(true);
       }
 
@@ -92,7 +89,7 @@ const MusicItem = ({ item }) => {
 
       if (saved) {
         const audioInfo = getAudioInfo(item, audioLocalUri);
-        
+
         await realm.saveAudio(audioInfo);
       }
     } catch (error) {
