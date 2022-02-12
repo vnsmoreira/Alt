@@ -17,9 +17,13 @@ export default function Home() {
 
   const updateMusics = async () => {
     setIsLoadingSearch(true);
-    let musics = await getMusics(search);
-    setMusicList(musics);
-    setIsLoadingSearch(false);
+    try {
+      let musics = await getMusics(search);
+      setMusicList(musics);
+      setIsLoadingSearch(false);
+    } catch (error) {
+      setMusicList([]);
+    }
   };
 
   /* search delay */
