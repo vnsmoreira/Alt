@@ -13,7 +13,7 @@ const MusicItem = ({ item }) => {
   const [isDownloading, setIsDownloading] = useState(downloadProgress != 0);
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isPlayAudioFunctionBeingExecuted, setIsPlayAudioFunctionBeingExecuted] = useState(false);
-  const [uri, setUri] = useState('');
+  const [audioUri, setAudioUri] = useState('');
   const { player, loaded, loading, playing, currentAudioId } = useContext(PlayerContext);
 
   const id = item.id;
@@ -26,7 +26,7 @@ const MusicItem = ({ item }) => {
   const isAudioLoading = isAudioSelected && loading;
   const isAudioPlaying = isAudioSelected && playing;
 
-  useEffect(async () => {
+  async function setAudioUri() {
     const remoteUri = baseURL + downloadEndpoint + item.id;
     let localUri = '';
 
@@ -38,10 +38,14 @@ const MusicItem = ({ item }) => {
         setIsDownloaded(true);
       }
 
-      localUri ? setUri(localUri) : setUri(remoteUri);
+      localUri ? setAudioUri(localUri) : setAudioUri(remoteUri);
     } catch (error) {
       console.log('Error while getting storage status');
     }
+  }
+
+  useEffect(() => {
+    setAudioUri();
   }, []);
 
   const titleStyle = isAudioPlaying ? '#ec73ff' : isAudioSelected ? '#6a007a' : 'white';
@@ -63,7 +67,7 @@ const MusicItem = ({ item }) => {
     if (isPlayAudioFunctionBeingExecuted) return;
 
     setIsPlayAudioFunctionBeingExecuted(true);
-    const audioInfo = getAudioInfo(item, uri);
+    const audioInfo = getAudioInfo(item, audioUri);
 
     if (loaded) {
       if (isAudioSelected) {
