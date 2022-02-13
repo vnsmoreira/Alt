@@ -2,7 +2,7 @@ export default {
   name: 'Audio',
   primaryKey: 'id',
   properties: {
-    id: 'string',
+    id: { type: 'string', indexed: true },
     title: 'string',
     duration: 'string',
     author: 'string',
