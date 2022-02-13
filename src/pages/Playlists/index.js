@@ -3,23 +3,27 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import { Ionicons } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
-import { StorageContext } from '../../contexts/storage';
 import MusicList from '../../components/AppMusicList';
+import * as realm from '../../services/realm';
+
 export default function Playlists() {
   const [audios, setAudios] = useState([]);
-  const AsyncStorage = useContext(StorageContext);
 
-  const updateAudios = async () => {
-    const storedAudios = await AsyncStorage.storage;
-    const audiosArray = storedAudios ? Object.values(storedAudios) : [];
-    setAudios(audiosArray);
-  };
+  async function updateAudios() {
+    const audios = await realm.getAudioCollection();
+    setAudios(audios);
+  }
 
-  useEffect(async () => {
-    await updateAudios();
-    /* const rootAlbum = await MediaLibrary.getAlbumAsync('Alt');
-    const { assets } = await MediaLibrary.getAssetsAsync({ album: rootAlbum, mediaType: 'audio' }); */
-  }, [AsyncStorage.storage]);
+  async function setOnAudiosUpdate() {
+    const audios = await realm.getAudioCollection();
+    audios.addListener((audios, changes) => {
+      updateAudios();
+    });
+  }
+
+  useEffect(() => {
+    setOnAudiosUpdate();
+  }, []);
 
   return (
     <View style={styles.playlists}>
