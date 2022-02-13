@@ -26,7 +26,7 @@ const MusicItem = ({ item }) => {
   const isAudioLoading = isAudioSelected && loading;
   const isAudioPlaying = isAudioSelected && playing;
 
-  async function setAudioUri() {
+  async function setupAudioUri() {
     const remoteUri = baseURL + downloadEndpoint + item.id;
     let localUri = '';
 
@@ -45,7 +45,7 @@ const MusicItem = ({ item }) => {
   }
 
   useEffect(() => {
-    setAudioUri();
+    setupAudioUri();
   }, []);
 
   const titleStyle = isAudioPlaying ? '#ec73ff' : isAudioSelected ? '#6a007a' : 'white';
