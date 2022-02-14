@@ -63,6 +63,11 @@ const getUpdatedObjectsId = (audios, changes) => {
   return updatedObjectsId;
 };
 
+/**
+ * Setup a listener to be called on audio collection changes.
+ * @param {function} callback  The callback to be called on changes.
+ * @param {string} [id]  (optional) The object id to be checked for changes.
+ */
 export const onAudioCollectionUpdate = async (callback, id) => {
   const realm = await getRealm();
   const audioCollection = realm.objects('Audio');
