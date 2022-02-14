@@ -47,3 +47,11 @@ export const getAudioCollection = async () => {
 
   return audioCollection;
 };
+
+export const onAudiosUpdate = async callback => {
+  const realm = await getRealm();
+  const audioCollection = realm.objects('Audio');
+  audioCollection.addListener((audios, changes) => {
+    callback(audios, changes);
+  });
+};
