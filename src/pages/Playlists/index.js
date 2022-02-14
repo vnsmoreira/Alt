@@ -15,7 +15,7 @@ export default function Playlists() {
   }
 
   useEffect(() => {
-    realm.onAudiosUpdate(updateAudios);
+    realm.onAudioCollectionUpdate(updateAudios);
   }, []);
 
   return (
