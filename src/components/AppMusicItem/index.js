@@ -45,7 +45,7 @@ const MusicItem = ({ item }) => {
   }
 
   useEffect(() => {
-    realm.onAudiosUpdate(setupAudioUri);
+    realm.onAudioCollectionUpdate(setupAudioUri, id);
   }, []);
 
   const titleStyle = isAudioPlaying ? '#ec73ff' : isAudioSelected ? '#6a007a' : 'white';

@@ -48,11 +48,34 @@ export const getAudioCollection = async () => {
   return audioCollection;
 };
 
-export const onAudioCollectionUpdate = async callback => {
+const getUpdatedObjectsId = (audios, changes) => {
+  let updatedObjectsIndex = [];
+  let updatedObjectsId = [];
+
+  const deleted = changes.deletions;
+  const inserted = changes.insertions;
+  const modificated = changes.modifications;
+
+  updatedObjectsIndex.push(...deleted, ...inserted, ...modificated);
+
+  updatedObjectsId = updatedObjectsIndex.map(index => audios[index].id);
+
+  return updatedObjectsId;
+};
+
+export const onAudioCollectionUpdate = async (callback, id) => {
   const realm = await getRealm();
   const audioCollection = realm.objects('Audio');
 
   audioCollection.addListener((audios, changes) => {
-    callback(audios, changes);
+    if (!id) {
+      callback(audios, changes);
+    } else {
+      const updatedObjectsId = getUpdatedObjectsId(audios, changes);
+      const firstRunning = updatedObjectsId.length == 0;
+      const isCurrentObjectBeingChanged = updatedObjectsId.find(objectId => objectId == id);
+
+      (isCurrentObjectBeingChanged || firstRunning) && callback(audios, changes);
+    }
   });
 };
