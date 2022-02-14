@@ -34,7 +34,7 @@ export const getAudio = async id => {
 
 export const deleteAudioCollection = async () => {
   const realm = await getRealm();
- 
+  const audioCollection = realm.objects('Audio');
 
   realm.write(() => {
     realm.delete(audioCollection);
