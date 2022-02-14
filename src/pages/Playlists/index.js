@@ -14,15 +14,8 @@ export default function Playlists() {
     setAudios(audios);
   }
 
-  async function setOnAudiosUpdate() {
-    const audios = await realm.getAudioCollection();
-    audios.addListener((audios, changes) => {
-      updateAudios();
-    });
-  }
-
   useEffect(() => {
-    setOnAudiosUpdate();
+    realm.onAudiosUpdate(updateAudios);
   }, []);
 
   return (
