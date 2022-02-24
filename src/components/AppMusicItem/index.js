@@ -14,7 +14,7 @@ const MusicItem = ({ item }) => {
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isPlayAudioFunctionBeingExecuted, setIsPlayAudioFunctionBeingExecuted] = useState(false);
   const [audioUri, setAudioUri] = useState('');
-  const { player, loaded, loading, playing, currentAudioId } = useContext(PlayerContext);
+  const { player, playing, loading, looping, currentAudioId } = useContext(PlayerContext);
 
   const id = item.id;
   const title = item.title;
@@ -60,29 +60,18 @@ const MusicItem = ({ item }) => {
       uri,
     };
 
-    return JSON.parse(JSON.stringify(info));
+    return info;
   };
 
   const handlePlayAudio = async () => {
-    if (isPlayAudioFunctionBeingExecuted) return;
-
-    setIsPlayAudioFunctionBeingExecuted(true);
-    const audioInfo = getAudioInfo(item, audioUri);
-
-    if (loaded) {
-      if (isAudioSelected) {
-        await player.replayAudio();
-      } else {
-        await player.unloadAudio();
-        await player.loadAudio(audioInfo);
-        await player.playAudio();
-      }
+    if (currentAudioId==id) {
+      playing ? player.jumpTo(0) : player.play();
     } else {
-      await player.loadAudio(audioInfo);
-      await player.playAudio();
-    }
+      const audioInfo = getAudioInfo(item, audioUri);
 
-    setIsPlayAudioFunctionBeingExecuted(false);
+      player.reset();
+      player.load(audioInfo);
+    }
   };
 
   const handleDownloadAudio = async () => {
