@@ -1,8 +1,7 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import { Ionicons } from '@expo/vector-icons';
-import * as MediaLibrary from 'expo-media-library';
 import MusicList from '../../components/AppMusicList';
 import * as realm from '../../services/realm';
 

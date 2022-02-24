@@ -1,6 +1,5 @@
 import * as FileSystem from 'expo-file-system';
 import { baseURL, downloadEndpoint } from '../../services/apis/index';
-import { saveFile } from '../media';
 
 const directoryPath = FileSystem.documentDirectory + 'Alt/';
 
@@ -25,16 +24,15 @@ export const downloadFile = async (id, setProgress, setDownloaded) => {
 
   try {
     await ensureDirectoryExists();
-
     const downloadResumable = FileSystem.createDownloadResumable(remoteUrl, fileUri, {}, progress =>
       updateProgress(progress, setProgress)
     );
 
     const { uri } = await downloadResumable.downloadAsync();
-    const isSaved = await saveFile(uri, setDownloaded);
 
-    return isSaved;
+    setDownloaded(true);
+    return { saved: true, audioLocalUri: uri };
   } catch (error) {
-    console.log(error);
+    return { saved: false, audioLocalUri: '' };
   }
 };

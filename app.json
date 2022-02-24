@@ -1,46 +1,9 @@
 {
   "expo": {
-    "name": "Alt",
-    "slug": "Alt",
-    "version": "0.8.0",
-    "orientation": "portrait",
-    "icon": "./src/assets/icon.png",
+    "name": "alternative",
+    "slug": "alternative",
+    "version": "1.0.0",
     "entryPoint": "main.js",
-    "splash": {
-      "image": "./src/assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "plugins": [
-      [
-        "expo-media-library",
-        {
-          "photosPermission": "Allow Alt to access your photos.",
-          "savePhotosPermission": "Allow Alt to save photos.",
-          "isAccessMediaLocationEnabled": "true"
-        }
-      ]
-    ],
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.tempest.alt",
-      "buildNumber": "0.8.0",
-      "infoPlist": {
-        "UIBackgroundModes": ["audio"]
-      }
-    },
-    "android": {
-      "package": "com.tempest.alt",
-      "versionCode": 1,
-      "permissions": [],
-      "adaptiveIcon": {
-        "foregroundImage": "./src/assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    }
+    "assetBundlePatterns": ["**/*"]
   }
 }
