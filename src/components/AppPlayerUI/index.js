@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { PlayerContext } from '../../contexts/player';
 import { useProgress } from 'react-native-track-player';
-
+import LoopingButton from './components/LoopingButton';
 import styles from './styles';
 
 const PlayerUI = () => {
-  const { player, playing, looping, currentAudioInfo } = useContext(PlayerContext);
+  const { player, playing, loopingMode, currentAudioInfo } = useContext(PlayerContext);
   const progress = useProgress();
   const [progressPercentage, setProgressPercentage] = useState(0);
 
@@ -23,14 +23,14 @@ const PlayerUI = () => {
       </View>
       <View style={styles.playerWrapper}>
         <View style={styles.thumbnailContainer}>
-           <Image style={styles.thumbnail} source={{ uri: currentAudioInfo.thumbnailUri }} />
+          <Image style={styles.thumbnail} source={{ uri: currentAudioInfo.thumbnailUri }} />
         </View>
         <View style={styles.aboutContainer}>
           <Text numberOfLines={1} style={styles.musicTitle}>
-             {currentAudioInfo.title}
+            {currentAudioInfo.title}
           </Text>
           <View style={styles.musicInfo}>
-             <Text style={styles.musicAuthor}>{currentAudioInfo.author}</Text>
+            <Text style={styles.musicAuthor}>{currentAudioInfo.author}</Text>
           </View>
         </View>
         <View style={styles.actions}>
@@ -43,9 +43,8 @@ const PlayerUI = () => {
               <FontAwesome name="play" size={24} color="white" />
             </TouchableOpacity>
           )}
-          <TouchableOpacity style={styles.loopIcon} onPress={player.toggleLooping}>
-            <MaterialIcons name="replay" size={24} color={looping ? 'purple' : 'white'} />
-          </TouchableOpacity>
+
+          <LoopingButton loopingMode={loopingMode} player={player} />
         </View>
       </View>
     </View>
