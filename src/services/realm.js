@@ -1,12 +1,12 @@
 import Realm from 'realm';
 import AudioSchema from '../schemas/AudioSchema';
 
-export default function getRealm() {
+const getRealm = () => {
   return Realm.open({
     schema: [AudioSchema],
     deleteRealmIfMigrationNeeded: true,
   });
-}
+};
 
 export const deleteAudio = async id => {
   const realm = await getRealm();
