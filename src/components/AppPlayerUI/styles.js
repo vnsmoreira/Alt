@@ -91,10 +91,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
   },
-  loopIcon: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-  },
 });
 
 export default styles;
