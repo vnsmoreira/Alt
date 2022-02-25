@@ -9,8 +9,8 @@ const MusicList = ({ data }) => {
       onScrollBeginDrag={Keyboard.dismiss}
       contentContainerStyle={styles.musicList}
       data={data}
-      keyExtractor={(item, index) => index}
-      renderItem={({ item, index }) => <MusicItem item={item} />}
+      keyExtractor={item => item.id}
+      renderItem={({ item }) => <MusicItem item={item} />}
     />
   );
 };
