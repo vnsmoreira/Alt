@@ -14,13 +14,11 @@ export const PlayerProvider = props => {
 
   useTrackPlayerEvents([Event.PlaybackState], async event => {
     const { state } = event;
-    const { Buffering, Connecting, Paused, Playing, Ready, Stopped, None } = State;
+    const actualState = State[state];
 
-    const status = [Buffering, Connecting, Paused, Playing, Ready, Stopped, None];
-    const translate = ['loading', 'conectando', 'pausado', 'tocando', 'pronto', 'parado', 'vazio'];
-
-    const index = status.findIndex(stt => stt === state);
-    console.log(translate[index]);
+    if (actualState == 'Stopped') {
+      looping && player.jumpTo(0);
+    }
   });
 
   const getTrack = audioInfo => {
