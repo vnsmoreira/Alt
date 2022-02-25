@@ -51,8 +51,8 @@ const MusicItem = ({ item }) => {
     if (currentAudioId == id) {
       playing ? player.jumpTo(0) : player.play();
     } else {
-      const audioInfo = getAudioInfo(item, audioUri);
-
+      const audioInfo = { id, title, duration, author, thumbnailUri, uri: audioUri };
+      
       player.reset();
       player.load(audioInfo);
     }
