@@ -12,26 +12,21 @@ const MusicItem = ({ item }) => {
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [isDownloading, setIsDownloading] = useState(downloadProgress != 0);
   const [isDownloaded, setIsDownloaded] = useState(false);
-  const [isPlayAudioFunctionBeingExecuted, setIsPlayAudioFunctionBeingExecuted] = useState(false);
   const [audioUri, setAudioUri] = useState('');
-  const { player, playing, loading, looping, currentAudioId } = useContext(PlayerContext);
+  const { player, playing, loading, currentAudioId } = useContext(PlayerContext);
 
-  const id = item.id;
-  const title = item.title;
-  const duration = item.duration;
-  const author = item.author;
-  const thumbnailUri = item.thumbnailUri;
+  const { id, title, duration, author, thumbnailUri } = item;
 
   const isAudioSelected = currentAudioId == id;
   const isAudioLoading = isAudioSelected && loading;
   const isAudioPlaying = isAudioSelected && playing;
 
   async function setupAudioUri() {
-    const remoteUri = baseURL + downloadEndpoint + item.id;
+    const remoteUri = baseURL + downloadEndpoint + id;
     let localUri = '';
 
     try {
-      const audio = await realm.getAudio(item.id);
+      const audio = await realm.getAudio(id);
 
       if (audio) {
         localUri = audio.uri;
@@ -50,21 +45,10 @@ const MusicItem = ({ item }) => {
 
   const titleStyle = isAudioPlaying ? '#ec73ff' : isAudioSelected ? '#6a007a' : 'white';
 
-  const getAudioInfo = (item, uri) => {
-    const info = {
-      id,
-      title: title,
-      duration: item.duration,
-      author: item.author,
-      thumbnailUri: item.thumbnailUri,
-      uri,
-    };
-
-    return info;
-  };
+  const getAudioInfo = (item, uri) => ({ ...item, uri });
 
   const handlePlayAudio = async () => {
-    if (currentAudioId==id) {
+    if (currentAudioId == id) {
       playing ? player.jumpTo(0) : player.play();
     } else {
       const audioInfo = getAudioInfo(item, audioUri);
