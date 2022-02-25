@@ -1,5 +1,10 @@
 import { createContext, useState } from 'react';
-import TrackPlayer, { Event, useTrackPlayerEvents, State } from 'react-native-track-player';
+import TrackPlayer, {
+  Event,
+  useTrackPlayerEvents,
+  State,
+  RepeatMode,
+} from 'react-native-track-player';
 
 TrackPlayer.setupPlayer({});
 
@@ -7,8 +12,9 @@ export const PlayerContext = createContext({});
 
 export const PlayerProvider = props => {
   const [playing, setPlaying] = useState(false);
+  const [stopped, setStopped] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [looping, setLooping] = useState(false);
+  const [loopingMode, setLoopingMode] = useState('queue');
   const [currentAudioId, setCurrentAudioId] = useState('');
   const [currentAudioInfo, setCurrentAudioInfo] = useState({});
 
@@ -17,7 +23,10 @@ export const PlayerProvider = props => {
     const actualState = State[state];
 
     if (actualState == 'Stopped') {
-      looping && player.jumpTo(0);
+      setPlaying(false);
+      setStopped(true);
+    } else {
+      setStopped(false);
     }
   });
 
@@ -46,36 +55,43 @@ export const PlayerProvider = props => {
     setPlaying(true);
   };
 
+  player.play = async () => {
+    if (playing) return;
+
+    stopped && player.jumpTo(0);
+    TrackPlayer.play();
+    setPlaying(true);
+  };
+
   player.pause = async () => {
     TrackPlayer.pause();
     setPlaying(false);
-  };
-
-  player.play = async () => {
-    if (playing) {
-      player.pause();
-    } else {
-      TrackPlayer.play();
-      setPlaying(true);
-    }
   };
 
   player.reset = async () => {
     TrackPlayer.reset();
   };
 
-  player.toggleLooping = () => {
-    setLooping(!looping);
+  player.changeLoopingMode = () => {
+    const { Off, Queue, Track } = RepeatMode;
+
+    const playerModes = [Off, Queue, Track];
+    const modes = ['off', 'queue', 'track'];
+
+    const previousModeIndex = modes.indexOf(loopingMode);
+    const currentModeIndex = previousModeIndex + 1 > modes.length - 1 ? 0 : previousModeIndex + 1;
+
+    TrackPlayer.setRepeatMode(playerModes[currentModeIndex]);
+    setLoopingMode(modes[currentModeIndex]);
   };
 
   player.jumpTo = async time => {
     TrackPlayer.seekTo(time);
-    console.log('jumped');
   };
 
   return (
     <PlayerContext.Provider
-      value={{ player, playing, loading, looping, currentAudioId, currentAudioInfo }}
+      value={{ player, playing, loading, loopingMode, currentAudioId, currentAudioInfo }}
     >
       {props.children}
     </PlayerContext.Provider>

@@ -7,15 +7,15 @@ const LoopingButton = ({ loopingMode, player }) => {
   return (
     <View>
       {loopingMode == 'queue' ? (
-        <TouchableOpacity style={styles.loopIcon} onPress={player.toggleLooping}>
+        <TouchableOpacity style={styles.loopIcon} onPress={player.changeLoopingMode}>
           <MaterialCommunityIcons name="repeat" size={24} color="purple" />
         </TouchableOpacity>
       ) : loopingMode == 'track' ? (
-        <TouchableOpacity style={styles.loopIcon} onPress={player.toggleLooping}>
+        <TouchableOpacity style={styles.loopIcon} onPress={player.changeLoopingMode}>
           <MaterialCommunityIcons name="repeat-once" size={24} color="purple" />
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity style={styles.loopIcon} onPress={player.toggleLooping}>
+        <TouchableOpacity style={styles.loopIcon} onPress={player.changeLoopingMode}>
           <MaterialCommunityIcons name="repeat-off" size={24} color="white" />
         </TouchableOpacity>
       )}
