@@ -4,9 +4,29 @@ import TrackPlayer, {
   useTrackPlayerEvents,
   State,
   RepeatMode,
+  Capability,
 } from 'react-native-track-player';
 
 TrackPlayer.setupPlayer({});
+
+TrackPlayer.updateOptions({
+  alwaysPauseOnInterruption: true,
+  stopWithApp: false,
+  capabilities: [
+    Capability.Play,
+    Capability.Pause,
+    Capability.SkipToNext,
+    Capability.SkipToPrevious,
+    Capability.SeekTo,
+  ],
+  compactCapabilities: [
+    Capability.Play,
+    Capability.Pause,
+    Capability.SkipToNext,
+    Capability.SkipToPrevious,
+    Capability.SeekTo,
+  ],
+});
 
 export const PlayerContext = createContext({});
 
