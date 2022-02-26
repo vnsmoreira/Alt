@@ -5,9 +5,14 @@ import AppRoutes from './routes';
 import AppLoading from 'expo-app-loading';
 import { useFonts, Lato_300Light, Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato';
 import { PlayerProvider } from '../src/contexts/player';
-import PlayerUI from './components/AppPlayerUI';
+import PlayerCompact from './components/PlayerCompact';
+import { useState } from 'react';
+import PlayerUI from './components/PlayerUI';
 
 export default function App() {
+  const [showModal, setShowModal] = useState(false);
+  const handleToggleModal = () => setShowModal(!showModal);
+
   let [fontsLoaded] = useFonts({
     Lato_300Light,
     Lato_400Regular,
@@ -22,7 +27,8 @@ export default function App() {
         <NavigationContainer>
           <StatusBar translucent backgroundColor="transparent" />
           <AppRoutes />
-          <PlayerUI />
+          <PlayerCompact toggleModal={handleToggleModal} />
+          <PlayerUI isVisible={showModal} toggleModal={handleToggleModal} />
         </NavigationContainer>
       </PlayerProvider>
     );
