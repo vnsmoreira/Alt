@@ -6,7 +6,7 @@ import { useProgress } from 'react-native-track-player';
 import LoopingButton from './components/LoopingButton';
 import styles from './styles';
 
-const PlayerUI = () => {
+const PlayerCompact = ({ toggleModal }) => {
   const { player, playing, loopingMode, currentAudioInfo } = useContext(PlayerContext);
   const progress = useProgress();
   const [progressPercentage, setProgressPercentage] = useState(0);
@@ -22,17 +22,19 @@ const PlayerUI = () => {
         <View style={{ ...styles.progress, width: `${progressPercentage}%` }}></View>
       </View>
       <View style={styles.playerWrapper}>
-        <View style={styles.thumbnailContainer}>
-          <Image style={styles.thumbnail} source={{ uri: currentAudioInfo.thumbnailUri }} />
-        </View>
-        <View style={styles.aboutContainer}>
-          <Text numberOfLines={1} style={styles.musicTitle}>
-            {currentAudioInfo.title}
-          </Text>
-          <View style={styles.musicInfo}>
-            <Text style={styles.musicAuthor}>{currentAudioInfo.author}</Text>
+        <TouchableOpacity onPress={toggleModal} style={{ width: 240, flexDirection: 'row' }}>
+          <View style={styles.thumbnailContainer}>
+            <Image style={styles.thumbnail} source={{ uri: currentAudioInfo.thumbnailUri }} />
           </View>
-        </View>
+          <View style={styles.aboutContainer}>
+            <Text numberOfLines={1} style={styles.musicTitle}>
+              {currentAudioInfo.title}
+            </Text>
+            <View style={styles.musicInfo}>
+              <Text style={styles.musicAuthor}>{currentAudioInfo.author}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
         <View style={styles.actions}>
           {playing ? (
             <TouchableOpacity style={styles.pauseIcon} onPress={player.pause}>
@@ -51,4 +53,4 @@ const PlayerUI = () => {
   );
 };
 
-export default PlayerUI;
+export default PlayerCompact;
