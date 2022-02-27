@@ -1,6 +1,6 @@
-import TrackPlayer, { State } from 'react-native-track-player';
+import TrackPlayer, { State, Event, useTrackPlayerEvents } from 'react-native-track-player';
 
-export const onPlayerEvent = {
+const onPlayerEvent = {
   'state-changed': ({ state }, stateSetters) => {
     const { setPlaying, setLoading, setStopped } = stateSetters;
     const actualState = State[state];
@@ -27,3 +27,18 @@ export const onPlayerEvent = {
     nextTrack && setNextTrack(nextTrack);
   },
 };
+
+export function listenToPlayerEvents(stateSetters) {
+  const { PlaybackState, PlaybackTrackChanged } = Event;
+
+  useTrackPlayerEvents([PlaybackState, PlaybackTrackChanged], async event => {
+    switch (event.type) {
+      case PlaybackState:
+        onPlayerEvent['state-changed'](event, stateSetters);
+        break;
+      case PlaybackTrackChanged:
+        onPlayerEvent['track-changed'](stateSetters);
+        break;
+    }
+  });
+}
