@@ -38,16 +38,25 @@ export const PlayerProvider = props => {
   const [currentAudioId, setCurrentAudioId] = useState('');
   const [currentAudioInfo, setCurrentAudioInfo] = useState({});
 
+  const resetState = () => {
+    setPlaying(false);
+    setStopped(false);
+    setLoading(false);
+  };
+
   useTrackPlayerEvents([Event.PlaybackState], async event => {
     const { state } = event;
     const actualState = State[state];
 
-    if (actualState == 'Stopped') {
-      setPlaying(false);
-      setStopped(true);
-    } else {
-      setStopped(false);
-    }
+    const stateSetters = {
+      Playing: () => setPlaying(true),
+      Stopped: () => setStopped(true),
+      Connecting: () => setLoading(true),
+      Buffering: () => setLoading(true),
+    };
+
+    resetState();
+    stateSetters[actualState] && stateSetters[actualState]();
   });
 
   const getTrack = audioInfo => {
@@ -69,10 +78,8 @@ export const PlayerProvider = props => {
     setCurrentAudioId(track.id);
     setCurrentAudioInfo(audioInfo);
 
-    setPlaying(false);
     await TrackPlayer.add(track);
     TrackPlayer.play();
-    setPlaying(true);
   };
 
   player.play = async () => {
@@ -80,12 +87,10 @@ export const PlayerProvider = props => {
 
     stopped && player.jumpTo(0);
     TrackPlayer.play();
-    setPlaying(true);
   };
 
   player.pause = async () => {
     TrackPlayer.pause();
-    setPlaying(false);
   };
 
   player.reset = async () => {
