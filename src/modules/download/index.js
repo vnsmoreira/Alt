@@ -36,3 +36,13 @@ export const downloadFile = async (id, setProgress, setDownloaded) => {
     return { saved: false, audioLocalUri: '' };
   }
 };
+
+export const deleteFile = async uri => {
+  try {
+    await FileSystem.deleteAsync(uri,{});
+
+    return { deleted: true };
+  } catch (error) {
+    return { deleted: false };
+  }
+};
