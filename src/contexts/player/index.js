@@ -1,11 +1,6 @@
 import { createContext, useState } from 'react';
-import TrackPlayer, {
-  Event,
-  useTrackPlayerEvents,
-  RepeatMode,
-  Capability,
-} from 'react-native-track-player';
-import { onPlayerEvent } from './events';
+import TrackPlayer, { RepeatMode, Capability } from 'react-native-track-player';
+import { listenToPlayerEvents } from './events';
 
 TrackPlayer.setupPlayer({});
 
@@ -47,19 +42,7 @@ export const PlayerProvider = props => {
     setPreviousTrack,
     setNextTrack,
   };
-
-  useTrackPlayerEvents([Event.PlaybackState, Event.PlaybackTrackChanged], async event => {
-    const { PlaybackState, PlaybackTrackChanged } = Event;
-
-    switch (event.type) {
-      case PlaybackState:
-        onPlayerEvent['state-changed'](event, trackplayerStateSetters);
-        break;
-      case PlaybackTrackChanged:
-        onPlayerEvent['track-changed'](trackplayerStateSetters);
-        break;
-    }
-  });
+  listenToPlayerEvents(trackplayerStateSetters);
 
   const getTrack = audioInfo => {
     const { id, uri, title, author } = audioInfo;
