@@ -7,6 +7,7 @@ import { downloadFile, deleteFile } from '../../modules/download';
 import { PlayerContext } from '../../contexts/player';
 import { baseURL, downloadEndpoint } from '../../services/apis/index.js';
 import * as realm from '../../services/realm';
+import { SheetManager } from 'react-native-actions-sheet';
 
 const MusicItem = ({ item }) => {
   const [downloadProgress, setDownloadProgress] = useState(0);
@@ -115,6 +116,10 @@ const MusicItem = ({ item }) => {
     }
   };
 
+  const handleOpenOptions = () => {
+    SheetManager.show('music-options', { id, isDownloaded });
+  };
+
   return (
     <View style={styles.musicItem}>
       <TouchableOpacity style={styles.presentationContainer} onPress={handlePlayAudio}>
@@ -160,12 +165,14 @@ const MusicItem = ({ item }) => {
             )}
           </ProgressCircle>
         </TouchableOpacity>
-        <SimpleLineIcons
-          style={{ marginLeft: 20, marginRight: 10 }}
-          name="options-vertical"
-          size={14}
-          color="gray"
-        />
+        <TouchableOpacity onPress={handleOpenOptions}>
+          <SimpleLineIcons
+            style={{ marginLeft: 20, marginRight: 10 }}
+            name="options-vertical"
+            size={14}
+            color="gray"
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
