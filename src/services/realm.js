@@ -51,7 +51,6 @@ export const getAudioCollection = async () => {
 /**
  * Setup a listener to be called on audio collection changes.
  * @param {function} callback  The callback to be called on changes.
- * @param {string} [id]  (optional) The object id to be checked for changes.
  */
 export const onAudioCollectionUpdate = async callback => {
   const realm = await getRealm();
@@ -59,4 +58,17 @@ export const onAudioCollectionUpdate = async callback => {
 
   const onUpdate = (audios, changes) => callback(audios, changes);
   audioCollection.addListener(onUpdate);
+};
+
+/**
+ * Setup a listener to be called on a specific audio change.
+ * @param {function} callback  The callback to be called on changes.
+ * @param {string} id The object id to be checked for changes.
+ */
+export const onAudioObjectUpdate = async (callback, id) => {
+  const realm = await getRealm();
+  const audio = realm.objectForPrimaryKey('Audio', id);
+
+  const onUpdate = (audios, changes) => callback(audios, changes);
+  audio?.addListener(onUpdate);
 };
