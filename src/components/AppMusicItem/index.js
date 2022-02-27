@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import { AntDesign, SimpleLineIcons, MaterialIcons } from '@expo/vector-icons';
 import ProgressCircle from 'react-native-progress-circle';
-import { downloadFile } from '../../modules/download';
+import { downloadFile, deleteFile } from '../../modules/download';
 import { PlayerContext } from '../../contexts/player';
 import { baseURL, downloadEndpoint } from '../../services/apis/index.js';
 import * as realm from '../../services/realm';
@@ -21,6 +21,16 @@ const MusicItem = ({ item }) => {
   const isAudioLoading = isAudioSelected && loading;
   const isAudioPlaying = isAudioSelected && playing;
 
+  const setAudioDownloaded = () => {
+    setIsDownloaded(true);
+    setDownloadProgress(100);
+  };
+
+  const setAudioNotDownloaded = () => {
+    setIsDownloaded(false);
+    setDownloadProgress(0);
+  };
+
   async function setupAudioUri() {
     const remoteUri = baseURL + downloadEndpoint + id;
     let localUri = '';
@@ -30,7 +40,9 @@ const MusicItem = ({ item }) => {
 
       if (audio) {
         localUri = audio.uri;
-        setIsDownloaded(true);
+        setAudioDownloaded();
+      } else {
+        setAudioNotDownloaded();
       }
 
       localUri ? setAudioUri(localUri) : setAudioUri(remoteUri);
@@ -40,7 +52,9 @@ const MusicItem = ({ item }) => {
   }
 
   useEffect(() => {
-    realm.onAudioCollectionUpdate(setupAudioUri, id);
+    (async () => {
+      await realm.onAudioCollectionUpdate(setupAudioUri);
+    })();
   }, []);
 
   const titleStyle = isAudioPlaying ? '#ec73ff' : isAudioSelected ? '#6a007a' : 'white';
@@ -52,7 +66,7 @@ const MusicItem = ({ item }) => {
       playing ? player.jumpTo(0) : player.play();
     } else {
       const audioInfo = { id, title, duration, author, thumbnailUri, uri: audioUri };
-      
+
       player.reset();
       player.load(audioInfo);
     }
@@ -74,7 +88,15 @@ const MusicItem = ({ item }) => {
     }
   };
 
-  const handleDeleteAudio = async () => {};
+  const handleDeleteAudio = async () => {
+    try {
+      const { deleted } = await deleteFile(audioUri);
+
+      deleted && (await realm.deleteAudio(id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <View style={styles.musicItem}>
