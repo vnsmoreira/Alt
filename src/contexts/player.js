@@ -37,26 +37,33 @@ export const PlayerProvider = props => {
   const [loopingMode, setLoopingMode] = useState('queue');
   const [currentAudioId, setCurrentAudioId] = useState('');
   const [currentAudioInfo, setCurrentAudioInfo] = useState({});
+  const [previousTrack, setPreviousTrack] = useState({});
+  const [nextTrack, setNextTrack] = useState({});
 
-  const resetState = () => {
-    setPlaying(false);
-    setStopped(false);
-    setLoading(false);
-  };
+  useTrackPlayerEvents([Event.PlaybackState, Event.PlaybackTrackChanged], async event => {
+    if (event.type == Event.PlaybackState) {
+      const { state } = event;
+      const actualState = State[state];
 
-  useTrackPlayerEvents([Event.PlaybackState], async event => {
-    const { state } = event;
-    const actualState = State[state];
+      const setTrackStates = {
+        Playing: () => setPlaying(true) && setLoading(false) && setStopped(false),
+        Stopped: () => setPlaying(false) && setStopped(true),
+        Paused: () => setPlaying(false),
+      };
 
-    const stateSetters = {
-      Playing: () => setPlaying(true),
-      Stopped: () => setStopped(true),
-      Connecting: () => setLoading(true),
-      Buffering: () => setLoading(true),
-    };
+      setTrackStates[actualState] && setTrackStates[actualState]();
+    }
 
-    resetState();
-    stateSetters[actualState] && stateSetters[actualState]();
+    if (event.type == Event.PlaybackTrackChanged) {
+      const playlist = await TrackPlayer.getQueue();
+      const currentTrackIndex = await TrackPlayer.getCurrentTrack();
+
+      const previousTrack = playlist[currentTrackIndex - 1];
+      const nextTrack = playlist[currentTrackIndex + 1];
+
+      previousTrack && setPreviousTrack(previousTrack);
+      nextTrack && setNextTrack(nextTrack);
+    }
   });
 
   const getTrack = audioInfo => {
@@ -73,12 +80,14 @@ export const PlayerProvider = props => {
   const player = {};
 
   player.load = async audioInfo => {
+    setLoading(true);
     const track = getTrack(audioInfo);
 
     setCurrentAudioId(track.id);
     setCurrentAudioInfo(audioInfo);
 
     await TrackPlayer.add(track);
+    setLoading(false);
     TrackPlayer.play();
   };
 
