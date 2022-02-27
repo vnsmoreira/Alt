@@ -69,6 +69,8 @@ export const onAudioObjectUpdate = async (callback, id) => {
   const realm = await getRealm();
   const audio = realm.objectForPrimaryKey('Audio', id);
 
+  if (!audio) return;
+
   const onUpdate = (audios, changes) => callback(audios, changes);
-  audio?.addListener(onUpdate);
+  audio.addListener(onUpdate);
 };
