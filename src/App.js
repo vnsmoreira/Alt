@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import { StatusBar } from 'react-native';
+import { StatusBar, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AppRoutes from './routes';
 import AppLoading from 'expo-app-loading';
@@ -8,6 +8,7 @@ import { PlayerProvider } from './contexts/player';
 import PlayerCompact from './components/PlayerCompact';
 import { useState } from 'react';
 import PlayerUI from './components/PlayerUI';
+import MusicActionSheet from './components/AppMusicItem/components/MusicActionsheet';
 
 export default function App() {
   const [showModal, setShowModal] = useState(false);
@@ -29,6 +30,7 @@ export default function App() {
           <AppRoutes />
           <PlayerCompact toggleModal={handleToggleModal} />
           <PlayerUI isVisible={showModal} toggleModal={handleToggleModal} />
+          <MusicActionSheet />
         </NavigationContainer>
       </PlayerProvider>
     );
