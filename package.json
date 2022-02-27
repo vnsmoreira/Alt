@@ -39,6 +39,7 @@
     "react-native-screens": "~3.10.1",
     "react-native-track-player": "^2.1.2",
     "react-native-web": "0.17.1",
+    "@miblanchard/react-native-slider": "^2.1.0",
     "realm": "^10.13.0"
   },
   "devDependencies": {
