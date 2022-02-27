@@ -10,7 +10,7 @@ import * as realm from '../../services/realm';
 
 const MusicItem = ({ item }) => {
   const [downloadProgress, setDownloadProgress] = useState(0);
-  const [isDownloading, setIsDownloading] = useState(downloadProgress != 0);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [audioUri, setAudioUri] = useState('');
   const { player, playing, loading, currentAudioId } = useContext(PlayerContext);
@@ -74,12 +74,14 @@ const MusicItem = ({ item }) => {
     if (isDownloaded || isDownloading) return;
 
     try {
+      setIsDownloading(true);
       const { saved, audioLocalUri } = await downloadFile(id, setDownloadProgress, setIsDownloaded);
 
       if (saved) {
         const audioInfo = getAudioInfo(item, audioLocalUri);
 
         await realm.saveAudio(audioInfo);
+        setIsDownloading(false);
       }
     } catch (error) {
       console.log(error);
