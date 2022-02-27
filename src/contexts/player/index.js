@@ -2,10 +2,10 @@ import { createContext, useState } from 'react';
 import TrackPlayer, {
   Event,
   useTrackPlayerEvents,
-  State,
   RepeatMode,
   Capability,
 } from 'react-native-track-player';
+import { onPlayerEvent } from './events';
 
 TrackPlayer.setupPlayer({});
 
@@ -40,29 +40,24 @@ export const PlayerProvider = props => {
   const [previousTrack, setPreviousTrack] = useState({});
   const [nextTrack, setNextTrack] = useState({});
 
+  const trackplayerStateSetters = {
+    setPlaying,
+    setLoading,
+    setStopped,
+    setPreviousTrack,
+    setNextTrack,
+  };
+
   useTrackPlayerEvents([Event.PlaybackState, Event.PlaybackTrackChanged], async event => {
-    if (event.type == Event.PlaybackState) {
-      const { state } = event;
-      const actualState = State[state];
+    const { PlaybackState, PlaybackTrackChanged } = Event;
 
-      const setTrackStates = {
-        Playing: () => setPlaying(true) && setLoading(false) && setStopped(false),
-        Stopped: () => setPlaying(false) && setStopped(true),
-        Paused: () => setPlaying(false),
-      };
-
-      setTrackStates[actualState] && setTrackStates[actualState]();
-    }
-
-    if (event.type == Event.PlaybackTrackChanged) {
-      const playlist = await TrackPlayer.getQueue();
-      const currentTrackIndex = await TrackPlayer.getCurrentTrack();
-
-      const previousTrack = playlist[currentTrackIndex - 1];
-      const nextTrack = playlist[currentTrackIndex + 1];
-
-      previousTrack && setPreviousTrack(previousTrack);
-      nextTrack && setNextTrack(nextTrack);
+    switch (event.type) {
+      case PlaybackState:
+        onPlayerEvent['state-changed'](event, trackplayerStateSetters);
+        break;
+      case PlaybackTrackChanged:
+        onPlayerEvent['track-changed'](trackplayerStateSetters);
+        break;
     }
   });
 
@@ -125,7 +120,16 @@ export const PlayerProvider = props => {
 
   return (
     <PlayerContext.Provider
-      value={{ player, playing, loading, loopingMode, currentAudioId, currentAudioInfo }}
+      value={{
+        player,
+        playing,
+        loading,
+        loopingMode,
+        currentAudioId,
+        currentAudioInfo,
+        previousTrack,
+        nextTrack,
+      }}
     >
       {props.children}
     </PlayerContext.Provider>
