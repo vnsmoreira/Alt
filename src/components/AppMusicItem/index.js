@@ -31,29 +31,44 @@ const MusicItem = ({ item }) => {
     setDownloadProgress(0);
   };
 
-  async function setupAudioUri() {
+  async function getAudioUri() {
     const remoteUri = baseURL + downloadEndpoint + id;
     let localUri = '';
 
+    const audio = await realm.getAudio(id);
+    if (audio) localUri = audio.uri;
+
+    return localUri ? localUri : remoteUri;
+  }
+
+  async function setupAudioUri() {
+    try {
+      const uri = await getAudioUri();
+      setAudioUri(uri);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function setupAudioListener() {
     try {
       const audio = await realm.getAudio(id);
 
       if (audio) {
-        localUri = audio.uri;
+        realm.onAudioObjectUpdate(setupAudioUri, id);
+
         setAudioDownloaded();
       } else {
+        await setupAudioUri();
         setAudioNotDownloaded();
       }
-
-      localUri ? setAudioUri(localUri) : setAudioUri(remoteUri);
     } catch (error) {
-      console.log('Error while getting storage status');
+      console.log(error);
     }
   }
 
   useEffect(() => {
-    setupAudioUri();
-    realm.onAudioObjectUpdate(setupAudioUri, id);
+    setupAudioListener();
   }, []);
 
   const titleStyle = isAudioPlaying ? '#ec73ff' : isAudioSelected ? '#6a007a' : 'white';
@@ -82,6 +97,7 @@ const MusicItem = ({ item }) => {
         const audioInfo = getAudioInfo(item, audioLocalUri);
 
         await realm.saveAudio(audioInfo);
+        realm.onAudioObjectUpdate(setupAudioUri, id);
         setIsDownloading(false);
       }
     } catch (error) {
