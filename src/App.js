@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import AppRoutes from './routes';
 import AppLoading from 'expo-app-loading';
 import { useFonts, Lato_300Light, Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato';
-import { PlayerProvider } from '../src/contexts/player';
+import { PlayerProvider } from './contexts/player';
 import PlayerCompact from './components/PlayerCompact';
 import { useState } from 'react';
 import PlayerUI from './components/PlayerUI';
