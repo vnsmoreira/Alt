@@ -19,6 +19,7 @@ const PlayerUI = ({ isVisible, toggleModal }) => {
   const onSlidingComplete = percentage => {
     const seconds = duration * (percentage / 100);
     player.jumpTo(seconds);
+    setProgressPercentage(percentage)
   };
 
   return (
