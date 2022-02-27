@@ -52,6 +52,7 @@ const MusicItem = ({ item }) => {
   }
 
   useEffect(() => {
+    setupAudioUri();
     realm.onAudioObjectUpdate(setupAudioUri, id);
   }, []);
 
