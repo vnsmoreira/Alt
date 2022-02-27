@@ -2,17 +2,24 @@ import { Modal, View, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from './styles';
 import { Slider } from '@miblanchard/react-native-slider';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useProgress } from 'react-native-track-player';
+import { PlayerContext } from '../../contexts/player';
 
 const PlayerUI = ({ isVisible, toggleModal }) => {
-  const progress = useProgress();
+  const { player } = useContext(PlayerContext);
+  const { duration, position } = useProgress();
   const [progressPercentage, setProgressPercentage] = useState(0);
 
   useEffect(() => {
-    const currentProgress = (progress.position / progress.duration) * 100;
+    const currentProgress = (position / duration) * 100;
     setProgressPercentage(currentProgress);
-  }, [progress]);
+  }, [position]);
+
+  const onSlidingComplete = percentage => {
+    const seconds = duration * (percentage / 100);
+    player.jumpTo(seconds);
+  };
 
   return (
     <Modal
@@ -37,9 +44,7 @@ const PlayerUI = ({ isVisible, toggleModal }) => {
           maximumTrackTintColor="#6a007a"
           thumbStyle={{ width: 10, height: 10 }}
           thumbTintColor="#ec73ff"
-          onSlidingComplete={([v]) => {
-            console.log('aaa', v);
-          }}
+          onSlidingComplete={([v]) => onSlidingComplete(v)}
         />
       </View>
     </Modal>
