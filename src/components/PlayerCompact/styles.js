@@ -2,10 +2,11 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   player: {
-    width: '98%',
+    width: '96%',
     height: 60,
 
-    marginHorizontal: '1%',
+    marginHorizontal: '2%',
+    marginBottom:2,
     borderRadius: 5,
 
     backgroundColor: '#212121',
