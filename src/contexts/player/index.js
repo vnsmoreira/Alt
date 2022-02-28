@@ -24,6 +24,8 @@ TrackPlayer.updateOptions({
   ],
 });
 
+TrackPlayer.setRepeatMode(RepeatMode.Queue);
+
 export const PlayerContext = createContext({});
 
 export const PlayerProvider = props => {
