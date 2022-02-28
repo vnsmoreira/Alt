@@ -9,7 +9,7 @@ import { baseURL, downloadEndpoint } from '../../services/apis/index.js';
 import * as realm from '../../services/realm';
 import { SheetManager } from 'react-native-actions-sheet';
 
-const MusicItem = ({ item }) => {
+const MusicItem = ({ item, queue }) => {
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
@@ -46,7 +46,7 @@ const MusicItem = ({ item }) => {
     try {
       const uri = await getAudioUri();
       setAudioUri(uri);
-      
+
       if (changes) {
         changes.deleted ? setAudioNotDownloaded() : setAudioDownloaded();
       }
