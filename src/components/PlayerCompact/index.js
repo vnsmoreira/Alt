@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { PlayerContext } from '../../contexts/player';
 import { useProgress } from 'react-native-track-player';
+import PlayButton from './components/PlayButton';
 import LoopingButton from './components/LoopingButton';
 import styles from './styles';
 
@@ -36,16 +37,7 @@ const PlayerCompact = ({ toggleModal }) => {
           </View>
         </TouchableOpacity>
         <View style={styles.actions}>
-          {playing ? (
-            <TouchableOpacity style={styles.pauseIcon} onPress={player.pause}>
-              <Ionicons name="pause" size={24} color="white" />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity style={styles.playIcon} onPress={player.play}>
-              <FontAwesome name="play" size={24} color="white" />
-            </TouchableOpacity>
-          )}
-
+          <PlayButton playing={playing} player={player} />
           <LoopingButton loopingMode={loopingMode} player={player} />
         </View>
       </View>
