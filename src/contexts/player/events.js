@@ -6,9 +6,18 @@ const onPlayerEvent = {
     const actualState = State[state];
 
     const setTrackStates = {
-      Playing: () => setPlaying(true) && setLoading(false) && setStopped(false),
-      Stopped: () => setPlaying(false) && setStopped(true),
-      Paused: () => setPlaying(false),
+      Playing: () => {
+        setPlaying(true);
+        setLoading(false);
+        setStopped(false);
+      },
+      Stopped: () => {
+        setPlaying(false);
+        setStopped(true);
+      },
+      Paused: () => {
+        setPlaying(false);
+      },
     };
 
     setTrackStates[actualState] && setTrackStates[actualState]();
