@@ -44,14 +44,32 @@ export const PlayerProvider = props => {
   };
   listenToPlayerEvents(trackplayerStateSetters);
 
+  const durationToSeconds = duration => {
+    let durationInSeconds = 0;
+    const durationFields = duration.split(':').map(value => parseInt(value));
+
+    if (durationFields.length == 2) {
+      const [minutes, seconds] = durationFields;
+
+      durationInSeconds += minutes * 60 + seconds;
+    } else {
+      const [hours, minutes, seconds] = durationFields;
+
+      durationInSeconds += hours * (60 * 60) + minutes * 60 + seconds;
+    }
+
+    return durationInSeconds;
+  };
+
   const getTrack = audioInfo => {
-    const { id, uri, title, author } = audioInfo;
+    const { id, uri, title, author, duration } = audioInfo;
 
     return {
       url: uri,
       title,
       artist: author,
       id,
+      duration: durationToSeconds(duration),
     };
   };
 
@@ -72,8 +90,7 @@ export const PlayerProvider = props => {
   player.play = async () => {
     if (playing) return;
 
-    stopped && player.jumpTo(0);
-    TrackPlayer.play();
+    stopped ? player.jumpTo(0) : TrackPlayer.play();
   };
 
   player.pause = async () => {
