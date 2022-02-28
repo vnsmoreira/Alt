@@ -42,10 +42,14 @@ const MusicItem = ({ item }) => {
     return localUri ? localUri : remoteUri;
   }
 
-  async function setupAudioUri() {
+  async function setupAudioUri(audio, changes) {
     try {
       const uri = await getAudioUri();
       setAudioUri(uri);
+      
+      if (changes) {
+        changes.deleted ? setAudioNotDownloaded() : setAudioDownloaded();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -57,11 +61,8 @@ const MusicItem = ({ item }) => {
 
       if (audio) {
         realm.onAudioObjectUpdate(setupAudioUri, id);
-
-        setAudioDownloaded();
       } else {
         await setupAudioUri();
-        setAudioNotDownloaded();
       }
     } catch (error) {
       console.log(error);
@@ -117,7 +118,13 @@ const MusicItem = ({ item }) => {
   };
 
   const handleOpenOptions = () => {
-    SheetManager.show('music-options', { id, isDownloaded });
+    SheetManager.show('music-options', {
+      id,
+      isDownloaded,
+      actions: {
+        delete: handleDeleteAudio,
+      },
+    });
   };
 
   return (
