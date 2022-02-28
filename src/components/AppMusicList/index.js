@@ -10,7 +10,7 @@ const MusicList = ({ data }) => {
       contentContainerStyle={styles.musicList}
       data={data}
       keyExtractor={item => item.id}
-      renderItem={({ item }) => <MusicItem item={item} queue={data} />}
+      renderItem={({ item, index }) => <MusicItem item={item} index={index} queue={data} />}
     />
   );
 };

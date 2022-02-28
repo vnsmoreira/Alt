@@ -9,7 +9,7 @@ import { baseURL, downloadEndpoint } from '../../services/apis/index.js';
 import * as realm from '../../services/realm';
 import { SheetManager } from 'react-native-actions-sheet';
 
-const MusicItem = ({ item, queue }) => {
+const MusicItem = ({ item, index, queue }) => {
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
@@ -118,6 +118,7 @@ const MusicItem = ({ item, queue }) => {
   };
 
   const handleOpenOptions = () => {
+    console.log(queue);
     SheetManager.show('music-options', {
       id,
       isDownloaded,
