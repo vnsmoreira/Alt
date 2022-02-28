@@ -71,6 +71,6 @@ export const onAudioObjectUpdate = async (callback, id) => {
 
   if (!audio) return;
 
-  const onUpdate = (audios, changes) => callback(audios, changes);
+  const onUpdate = (audio, changes) => callback(audio, changes);
   audio.addListener(onUpdate);
 };
