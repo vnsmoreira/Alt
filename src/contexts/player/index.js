@@ -11,6 +11,7 @@ TrackPlayer.updateOptions({
   capabilities: [
     Capability.Play,
     Capability.Pause,
+    Capability.Stop,
     Capability.SkipToNext,
     Capability.SkipToPrevious,
     Capability.SeekTo,
@@ -18,6 +19,7 @@ TrackPlayer.updateOptions({
   compactCapabilities: [
     Capability.Play,
     Capability.Pause,
+    Capability.Stop,
     Capability.SkipToNext,
     Capability.SkipToPrevious,
     Capability.SeekTo,
