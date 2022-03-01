@@ -35,15 +35,13 @@ export const PlayerProvider = props => {
   const [loopingMode, setLoopingMode] = useState('queue');
   const [currentAudioId, setCurrentAudioId] = useState('');
   const [currentAudioInfo, setCurrentAudioInfo] = useState({});
-  const [previousTrack, setPreviousTrack] = useState({});
-  const [nextTrack, setNextTrack] = useState({});
 
   const trackplayerStateSetters = {
     setPlaying,
     setLoading,
     setStopped,
-    setPreviousTrack,
-    setNextTrack,
+    setCurrentAudioId,
+    setCurrentAudioInfo,
   };
 
   listenToPlayerEvents(trackplayerStateSetters);
@@ -51,15 +49,19 @@ export const PlayerProvider = props => {
   /* player */
   const player = {};
 
-  player.load = async audioInfo => {
+  player.load = async (queue, index) => {
     setLoading(true);
-    const track = getTrack(audioInfo);
 
-    setCurrentAudioId(track.id);
-    setCurrentAudioInfo(audioInfo);
+    const playlist = queue.map(getTrack);
+    const currentAudio = playlist[index];
 
-    await TrackPlayer.add(track);
+    setCurrentAudioId(currentAudio.id);
+    setCurrentAudioInfo(currentAudio);
+
+    TrackPlayer.add(playlist);
     setLoading(false);
+
+    TrackPlayer.skip(index);
     TrackPlayer.play();
   };
 
@@ -103,8 +105,6 @@ export const PlayerProvider = props => {
         loopingMode,
         currentAudioId,
         currentAudioInfo,
-        previousTrack,
-        nextTrack,
       }}
     >
       {props.children}
