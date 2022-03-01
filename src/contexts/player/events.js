@@ -23,17 +23,17 @@ const onPlayerEvent = {
     setTrackStates[actualState] && setTrackStates[actualState]();
   },
 
-  'track-changed': async stateSetters => {
-    const { setPreviousTrack, setNextTrack } = stateSetters;
+  'track-changed': async (event, stateSetters) => {
+    const { setCurrentAudioId, setCurrentAudioInfo } = stateSetters;
+    const { nextTrack } = event;
 
     const playlist = await TrackPlayer.getQueue();
-    const currentTrackIndex = await TrackPlayer.getCurrentTrack();
+    const track = playlist[nextTrack];
 
-    const previousTrack = playlist[currentTrackIndex - 1];
-    const nextTrack = playlist[currentTrackIndex + 1];
-
-    previousTrack && setPreviousTrack(previousTrack);
-    nextTrack && setNextTrack(nextTrack);
+    if (track) {
+      setCurrentAudioId(track.id);
+      setCurrentAudioInfo(track);
+    }
   },
 };
 
@@ -46,7 +46,7 @@ export function listenToPlayerEvents(stateSetters) {
         onPlayerEvent['state-changed'](event, stateSetters);
         break;
       case PlaybackTrackChanged:
-        onPlayerEvent['track-changed'](stateSetters);
+        onPlayerEvent['track-changed'](event, stateSetters);
         break;
     }
   });
