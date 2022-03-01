@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { PlayerContext } from '../../contexts/player';
 import { useProgress } from 'react-native-track-player';
 import PlayButton from './components/PlayButton';
@@ -32,7 +31,7 @@ const PlayerCompact = ({ toggleModal }) => {
               {currentAudioInfo.title}
             </Text>
             <View style={styles.musicInfo}>
-              <Text style={styles.musicAuthor}>{currentAudioInfo.author}</Text>
+              <Text style={styles.musicAuthor}>{currentAudioInfo.artist}</Text>
             </View>
           </View>
         </TouchableOpacity>
