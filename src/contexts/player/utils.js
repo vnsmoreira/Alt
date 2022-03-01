@@ -1,3 +1,5 @@
+import { baseURL, downloadEndpoint } from '../../services/apis';
+
 const durationToSeconds = duration => {
   let durationInSeconds = 0;
   const durationFields = duration.split(':').map(value => parseInt(value));
@@ -16,7 +18,7 @@ const durationToSeconds = duration => {
 };
 
 export const getTrack = audioInfo => {
-  const { id, uri, title, author, duration } = audioInfo;
+  const { id, uri, title, author, duration, thumbnailUri } = audioInfo;
 
   return {
     url: uri,
@@ -24,5 +26,28 @@ export const getTrack = audioInfo => {
     artist: author,
     id,
     duration: durationToSeconds(duration),
+    thumbnailUri,
   };
+};
+
+export const convertToPlaylist = (musics, downloadedAudios) => {
+  const downloadedAudiosIds = downloadedAudios.map(audio => audio.id);
+
+  return musics.map(track => {
+    let uri = '';
+    const remoteUri = baseURL + downloadEndpoint + track.id;
+
+    const isAudioDownloaded = downloadedAudiosIds.includes(track.id);
+
+    if (isAudioDownloaded) {
+      const { uri: localUri } = downloadedAudios.find(audio => audio.id == track.id);
+
+      uri = localUri;
+    } else {
+      uri = remoteUri;
+    }
+    const audioItem = { ...track, uri };
+
+    return audioItem;
+  });
 };
