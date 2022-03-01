@@ -81,10 +81,8 @@ const MusicItem = ({ item, index, queue }) => {
     if (currentAudioId == id) {
       playing ? player.jumpTo(0) : player.play();
     } else {
-      const audioInfo = { id, title, duration, author, thumbnailUri, uri: audioUri };
-
       player.reset();
-      player.load(audioInfo);
+      player.load(queue, index);
     }
   };
 
@@ -118,7 +116,6 @@ const MusicItem = ({ item, index, queue }) => {
   };
 
   const handleOpenOptions = () => {
-    console.log(queue);
     SheetManager.show('music-options', {
       id,
       isDownloaded,
