@@ -36,7 +36,6 @@ export default function Home() {
 
   /* search delay */
   useEffect(() => {
-    realm.onAudioCollectionUpdate(updateMusics);
     clearTimeout(searchTimer);
     setSearchTimer(setTimeout(() => updateMusics(), 250));
   }, [search]);
@@ -48,7 +47,7 @@ export default function Home() {
         <SearchInput search={search} setSearch={setSearch} />
       </View>
 
-      {isLoadingSearch ? <AppLoadingSpinner color="purple" /> : <MusicList data={musicList} />}
+      {isLoadingSearch ? <AppLoadingSpinner color="purple" /> : <MusicList data={musicList} setData={setMusicList}/>}
     </View>
   );
 }
