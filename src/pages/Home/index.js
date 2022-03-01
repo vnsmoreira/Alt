@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, View } from 'react-native';
 import styles from './styles';
 import { getMusics } from '../../services/apis/searchMusics';
+import * as realm from '../../services/realm';
+import { convertToPlaylist } from '../../contexts/player/utils';
 
 /* components */
 import SearchInput from '../../components/Home/SearchInput';
@@ -18,8 +20,14 @@ export default function Home() {
   const updateMusics = async () => {
     setIsLoadingSearch(true);
     try {
-      let musics = await getMusics(search);
-      setMusicList(musics);
+      const [musics, downloadedAudios] = await Promise.all([
+        getMusics(search),
+        realm.getAudioCollection(),
+      ]);
+
+      const playlist = convertToPlaylist(musics, downloadedAudios);
+
+      setMusicList(playlist);
       setIsLoadingSearch(false);
     } catch (error) {
       setMusicList([]);
@@ -28,6 +36,7 @@ export default function Home() {
 
   /* search delay */
   useEffect(() => {
+    realm.onAudioCollectionUpdate(updateMusics);
     clearTimeout(searchTimer);
     setSearchTimer(setTimeout(() => updateMusics(), 250));
   }, [search]);
