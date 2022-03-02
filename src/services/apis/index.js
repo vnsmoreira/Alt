@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const baseURL = 'http://192.168.15.127:3000';
+export const baseURL = 'https://alt-backend.herokuapp.com';
 
 const api = axios.create({
   baseURL,
