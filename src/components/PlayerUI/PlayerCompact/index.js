@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { PlayerContext } from '../../contexts/player';
+import { PlayerContext } from '../../../contexts/player';
 import { useProgress } from 'react-native-track-player';
-import PlayButton from './components/PlayButton';
-import LoopingButton from './components/LoopingButton';
+import PlayButton from '../components/PlayButton';
+import LoopingButton from '../components/LoopingButton';
 import styles from './styles';
 
 const PlayerCompact = ({ toggleModal }) => {
