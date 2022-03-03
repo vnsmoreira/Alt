@@ -79,6 +79,14 @@ export const PlayerProvider = props => {
     TrackPlayer.reset();
   };
 
+  player.skipNext = async () => {
+    TrackPlayer.skipToNext();
+  };
+
+  player.skipPrevious = async () => {
+    TrackPlayer.skipToPrevious();
+  };
+
   player.changeLoopingMode = () => {
     const { Off, Queue, Track } = RepeatMode;
 
