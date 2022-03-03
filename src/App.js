@@ -6,7 +6,7 @@ import AppLoading from 'expo-app-loading';
 import { useFonts, Lato_300Light, Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato';
 import { PlayerProvider } from './contexts/player';
 import { useState } from 'react';
-import PlayerCompact from './components/PlayerUI/PlayerModal';
+import PlayerCompact from './components/PlayerUI/PlayerCompact';
 import PlayerModal from './components/PlayerUI/PlayerModal';
 import MusicActionSheet from './components/AppMusicItem/components/MusicActionsheet';
 
