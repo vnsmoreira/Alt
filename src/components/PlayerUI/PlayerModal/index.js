@@ -3,7 +3,7 @@ import { Entypo } from '@expo/vector-icons';
 import styles from './styles';
 import { useContext, useEffect, useState } from 'react';
 import { useProgress } from 'react-native-track-player';
-import { PlayerContext } from '../../contexts/player';
+import { PlayerContext } from '../../../contexts/player';
 import PlayButton from '../PlayerCompact/components/PlayButton';
 import LoopingButton from '../PlayerCompact/components/LoopingButton';
 import SkipPreviousButton from './components/SkipPreviousButton';
