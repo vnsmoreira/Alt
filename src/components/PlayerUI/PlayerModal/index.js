@@ -4,12 +4,12 @@ import styles from './styles';
 import { useContext, useEffect, useState } from 'react';
 import { useProgress } from 'react-native-track-player';
 import { PlayerContext } from '../../../contexts/player';
-import PlayButton from '../PlayerCompact/components/PlayButton';
-import LoopingButton from '../PlayerCompact/components/LoopingButton';
-import SkipPreviousButton from './components/SkipPreviousButton';
-import SkipNextButton from './components/SkipNextButton';
-import PlayerSeekbar from './components/PlayerSeekbar';
-import ShareButton from './components/ShareButton';
+import PlayButton from '../components/PlayButton';
+import LoopingButton from '../components/LoopingButton';
+import SkipPreviousButton from '../components/SkipPreviousButton';
+import SkipNextButton from '../components/SkipNextButton';
+import PlayerSeekbar from '../components/PlayerSeekbar';
+import ShareButton from '../components/ShareButton';
 
 const PlayerUI = ({ isVisible, toggleModal }) => {
   const { player, playing, loopingMode, currentAudioInfo } = useContext(PlayerContext);
@@ -75,13 +75,13 @@ const PlayerUI = ({ isVisible, toggleModal }) => {
             <ShareButton />
 
             <View style={styles.mainControls}>
-              <SkipPreviousButton handlePress={player.skipNext} />
+              <SkipPreviousButton handlePress={player.skipPrevious} />
 
               <TouchableOpacity onPress={handlePlay} style={styles.playButtonContainer}>
                 <PlayButton disabled={true} playing={playing} />
               </TouchableOpacity>
 
-              <SkipNextButton handlePress={player.skipPrevious} />
+              <SkipNextButton handlePress={player.skipNext} />
             </View>
 
             <LoopingButton loopingMode={loopingMode} player={player} />
