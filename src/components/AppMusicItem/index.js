@@ -14,7 +14,7 @@ const MusicItem = ({ item, index, queue, updateMusicItem }) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [audioUri, setAudioUri] = useState('');
-  const { player, playing, loading, currentAudioId } = useContext(PlayerContext);
+  const { player, playing, loading, currentAudioId, currentAudioInfo } = useContext(PlayerContext);
 
   const { id, title, duration, author, thumbnailUri } = item;
 
@@ -80,7 +80,10 @@ const MusicItem = ({ item, index, queue, updateMusicItem }) => {
   const getAudioInfo = (item, uri) => ({ ...item, uri });
 
   const handlePlayAudio = async () => {
-    if (currentAudioId == id) {
+    const thisMusicIsPlaying = currentAudioId == id;
+    const uriHasChanged = currentAudioInfo.url != audioUri;
+
+    if (thisMusicIsPlaying && !uriHasChanged) {
       playing ? player.jumpTo(0) : player.play();
     } else {
       player.reset();
