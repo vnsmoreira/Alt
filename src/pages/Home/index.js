@@ -6,7 +6,7 @@ import * as realm from '../../services/realm';
 import { convertToPlaylist } from '../../contexts/player/utils';
 
 /* components */
-import SearchInput from '../../components/Home/SearchInput';
+import SearchInput from '../../components/Views/Home/SearchInput';
 import AppLoadingSpinner from '../../components/AppLoadingSpinner';
 import MusicList from '../../components/AppMusicList';
 
@@ -47,7 +47,11 @@ export default function Home() {
         <SearchInput search={search} setSearch={setSearch} />
       </View>
 
-      {isLoadingSearch ? <AppLoadingSpinner color="purple" /> : <MusicList data={musicList} setData={setMusicList}/>}
+      {isLoadingSearch ? (
+        <AppLoadingSpinner color="purple" />
+      ) : (
+        <MusicList data={musicList} setData={setMusicList} />
+      )}
     </View>
   );
 }
