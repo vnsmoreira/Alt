@@ -49,12 +49,22 @@ export const getAudioCollection = async () => {
   return audioCollection;
 };
 
+export const createAlbum = async album => {
+  const realm = await getRealm();
+  const id = new Realm.BSON.UUID();
+
+  realm.write(() => {
+    realm.create('Album', { ...album, id });
+  });
+};
+
 export const getAlbumCollection = async () => {
   const realm = await getRealm();
   const albumCollection = realm.objects('Album');
 
   return albumCollection;
 };
+
 /**
  * Setup a listener to be called on audio collection changes.
  * @param {function} callback  The callback to be called on changes.
