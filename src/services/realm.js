@@ -1,9 +1,10 @@
 import Realm from 'realm';
 import AudioSchema from '../schemas/AudioSchema';
+import AlbumSchema from '../schemas/AlbumSchema';
 
 const getRealm = () => {
   return Realm.open({
-    schema: [AudioSchema],
+    schema: [AudioSchema, AlbumSchema],
     deleteRealmIfMigrationNeeded: true,
   });
 };
@@ -48,6 +49,12 @@ export const getAudioCollection = async () => {
   return audioCollection;
 };
 
+export const getAlbumCollection = async () => {
+  const realm = await getRealm();
+  const albumCollection = realm.objects('Album');
+
+  return albumCollection;
+};
 /**
  * Setup a listener to be called on audio collection changes.
  * @param {function} callback  The callback to be called on changes.
