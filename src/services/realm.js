@@ -81,6 +81,15 @@ export const getAlbumCollection = async () => {
   return albumCollection;
 };
 
+export const deleteAlbumCollection = async () => {
+  const realm = await getRealm();
+  const albumCollection = realm.objects('Album');
+
+  realm.write(() => {
+    realm.delete(albumCollection);
+  });
+};
+
 /**
  * Setup a listener to be called on audio collection changes.
  * @param {function} callback  The callback to be called on changes.
