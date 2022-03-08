@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Home from '../pages/Home';
-import Playlists from '../pages/Playlists/index.js';
+import Playlists from '../pages/Playlists';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,11 +30,7 @@ export default function AppRoutes() {
         component={Playlists}
         options={{
           tabBarIcon: ({ focused }) => (
-            <MaterialCommunityIcons
-              name="playlist-music"
-              size={24}
-              color={focused ? 'white' : 'gray'}
-            />
+            <MaterialCommunityIcons name="playlist-music" size={24} color={focused ? 'white' : 'gray'}/>
           ),
           tabBarLabelStyle: styles.tabBarLabelStyle,
         }}
