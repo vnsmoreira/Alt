@@ -49,6 +49,15 @@ export const getAudioCollection = async () => {
   return audioCollection;
 };
 
+export const deleteAlbum = async id => {
+  const realm = await getRealm();
+  const album = realm.objectForPrimaryKey('Album', id);
+
+  realm.write(() => {
+    realm.delete(album);
+  });
+};
+
 export const createAlbum = async album => {
   const realm = await getRealm();
   const id = new Realm.BSON.UUID();
