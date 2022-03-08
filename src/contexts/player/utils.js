@@ -30,6 +30,16 @@ export const getTrack = audioInfo => {
   };
 };
 
+export const sortPlaylist = (tracksArray = [], index) => {
+  /* organize playlist to have the selected track(index) as first track */
+  const endIndex = tracksArray.length - 1;
+
+  const firstItems = tracksArray.splice(index, endIndex);
+  const remainingItems = tracksArray;
+
+  return [...firstItems, ...remainingItems];
+};
+
 export const convertToPlaylist = (musics, downloadedAudios) => {
   const downloadedAudiosIds = downloadedAudios.map(audio => audio.id);
 
