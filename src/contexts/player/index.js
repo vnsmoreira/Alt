@@ -1,7 +1,7 @@
 import { createContext, useState } from 'react';
 import TrackPlayer, { RepeatMode, Capability } from 'react-native-track-player';
 import { listenToPlayerEvents } from './events';
-import { getTrack } from './utils';
+import { getTrack, sortPlaylist } from './utils';
 
 TrackPlayer.setupPlayer({});
 
@@ -52,16 +52,17 @@ export const PlayerProvider = props => {
   player.load = async (queue, index) => {
     setLoading(true);
 
-    const playlist = queue.map(getTrack);
-    const currentAudio = playlist[index];
+    const tracksArray = queue.map(getTrack);
+    const playlist = sortPlaylist(tracksArray, index);
+
+    const currentAudio = playlist[0];
 
     setCurrentAudioId(currentAudio.id);
     setCurrentAudioInfo(currentAudio);
 
     TrackPlayer.add(playlist);
     setLoading(false);
-
-    TrackPlayer.skip(index);
+    
     TrackPlayer.play();
   };
 
