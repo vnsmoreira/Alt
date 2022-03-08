@@ -67,6 +67,13 @@ export const createAlbum = async album => {
   });
 };
 
+export const getAlbum = async id => {
+  const realm = await getRealm();
+  const album = realm.objectForPrimaryKey('Album', id);
+
+  return album;
+};
+
 export const getAlbumCollection = async () => {
   const realm = await getRealm();
   const albumCollection = realm.objects('Album');
