@@ -3,8 +3,8 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import { FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
 
-const MusicItem = ({ title, musicList = [] }) => {
-  const numberOfMusicsOnAlbum = musicList.length;
+const AlbumItem = ({ name, audioList = [] }) => {
+  const numberOfMusicsOnAlbum = audioList.length;
 
   return (
     <View style={styles.musicItem}>
@@ -15,7 +15,7 @@ const MusicItem = ({ title, musicList = [] }) => {
 
         <View style={styles.aboutContainer}>
           <Text numberOfLines={1} style={{ ...styles.musicTitle }}>
-            {title}
+            {name}
           </Text>
 
           <View style={styles.musicInfo}>
@@ -33,4 +33,4 @@ const MusicItem = ({ title, musicList = [] }) => {
   );
 };
 
-export default MusicItem;
+export default AlbumItem;
