@@ -8,6 +8,7 @@ import { PlayerContext } from '../../contexts/player';
 import { baseURL, downloadEndpoint } from '../../services/apis/index.js';
 import * as realm from '../../services/realm';
 import { SheetManager } from 'react-native-actions-sheet';
+import BlinkingAnimation from '../AppBlinkingAnimation';
 
 const MusicItem = ({ item, index, queue, updateMusicItem }) => {
   const [downloadProgress, setDownloadProgress] = useState(0);
@@ -138,15 +139,30 @@ const MusicItem = ({ item, index, queue, updateMusicItem }) => {
         </View>
 
         <View style={styles.aboutContainer}>
-          <Text
-            numberOfLines={1}
-            style={{
-              ...styles.musicTitle,
-              ...{ color: titleStyle },
-            }}
-          >
-            {title}
-          </Text>
+          {isAudioLoading ? (
+            <BlinkingAnimation duration={300} style={{ width: 180, heigth: 60 }}>
+              <Text
+                numberOfLines={1}
+                style={{
+                  ...styles.musicTitle,
+                  ...{ color: titleStyle },
+                }}
+              >
+                {title}
+              </Text>
+            </BlinkingAnimation>
+          ) : (
+            <Text
+              numberOfLines={1}
+              style={{
+                ...styles.musicTitle,
+                ...{ color: titleStyle },
+              }}
+            >
+              {title}
+            </Text>
+          )}
+
           <View style={styles.musicInfo}>
             <Text style={styles.musicDuration}>{duration}</Text>
             <Text numberOfLines={1} style={styles.musicAuthor}>
