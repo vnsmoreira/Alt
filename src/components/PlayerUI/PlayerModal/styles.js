@@ -5,8 +5,9 @@ const styles = StyleSheet.create({
   playerContainer: {
     width: '100%',
     height: '100%',
-
-    backgroundColor: '#141414',
+  },
+  backgroundWrapper: {
+    backgroundColor: 'rgba(0,0,0,.3)',
   },
   playerWrapper: {
     width: '90%',
