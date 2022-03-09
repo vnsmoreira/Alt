@@ -6,9 +6,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  backgroundWrapper: {
-    backgroundColor: 'rgba(0,0,0,.3)',
-  },
+  backgroundWrapper: {},
   playerWrapper: {
     width: '90%',
     height: '100%',

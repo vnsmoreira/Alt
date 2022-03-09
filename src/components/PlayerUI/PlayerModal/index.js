@@ -43,7 +43,7 @@ const PlayerUI = ({ isVisible, toggleModal }) => {
         style={[styles.playerContainer]}
         source={{ uri: thumbnailUri }}
       >
-        <View style={styles.backgroundWrapper}>
+        <View style={{ backgroundColor: thumbnailUri ? 'rgba(0,0,0,.3)' : '#141414' }}>
           <View style={styles.playerWrapper}>
             <View style={styles.playerHeader}>
               <TouchableOpacity onPress={toggleModal}>
