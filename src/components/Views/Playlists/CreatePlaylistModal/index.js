@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import { View, TouchableOpacity, Modal, TextInput } from 'react-native';
 import styles from './styles';
+import * as realm from '../../../../services/realm';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const CreatePlaylistModal = ({ modalVisibility, setModalVisibility }) => {
   const [playlistName, setPlaylistName] = useState('');
+
+  const handleCreateAlbum = () => {
+    realm.createAlbum({ name: playlistName, audioList: [] });
+    setPlaylistName('');
+  };
 
   return (
     <Modal
@@ -49,6 +55,7 @@ const CreatePlaylistModal = ({ modalVisibility, setModalVisibility }) => {
           />
           <View style={{ width: 40 }}>
             <TouchableOpacity
+              onPress={handleCreateAlbum}
               style={{
                 width: 40,
                 height: 40,
