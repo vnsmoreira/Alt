@@ -61,8 +61,6 @@ export const PlayerProvider = props => {
     setCurrentAudioInfo(currentAudio);
 
     TrackPlayer.add(playlist);
-    setLoading(false);
-    
     TrackPlayer.play();
   };
 
