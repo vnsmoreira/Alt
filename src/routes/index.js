@@ -2,10 +2,19 @@ import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Home from '../pages/Home';
-import Playlists from '../pages/Playlists';
+import HomeStack from './homeStack';
+import PlaylistStack from './playlistStack';
 
 const Tab = createBottomTabNavigator();
+
+/* icons */
+const HomeTabBarIcon = ({ focused }) => (
+  <MaterialIcons name="home-filled" size={24} color={focused ? 'white' : 'gray'} />
+);
+
+const PlaylistTabBarIcon = ({ focused }) => (
+  <MaterialCommunityIcons name="playlist-music" size={24} color={focused ? 'white' : 'gray'} />
+);
 
 export default function AppRoutes() {
   return (
@@ -16,22 +25,20 @@ export default function AppRoutes() {
       }}
     >
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="HomeStack"
+        component={HomeStack}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <MaterialIcons name="home-filled" size={24} color={focused ? 'white' : 'gray'} />
-          ),
+          title: 'Home',
+          tabBarIcon: HomeTabBarIcon,
           tabBarLabelStyle: styles.tabBarLabelStyle,
         }}
       />
       <Tab.Screen
-        name="Playlists"
-        component={Playlists}
+        name="PlaylistStack"
+        component={PlaylistStack}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <MaterialCommunityIcons name="playlist-music" size={24} color={focused ? 'white' : 'gray'}/>
-          ),
+          title: 'Playlists',
+          tabBarIcon: PlaylistTabBarIcon,
           tabBarLabelStyle: styles.tabBarLabelStyle,
         }}
       />
