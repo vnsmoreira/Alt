@@ -8,7 +8,7 @@ import { PlayerProvider } from './contexts/player';
 import { useState } from 'react';
 import PlayerCompact from './components/PlayerUI/PlayerCompact';
 import PlayerModal from './components/PlayerUI/PlayerModal';
-import MusicActionSheet from './components/AppMusicItem/components/MusicActionsheet';
+import AppActionSheet from './components/AppActionSheet';
 
 export default function App() {
   const [showModal, setShowModal] = useState(false);
@@ -30,7 +30,7 @@ export default function App() {
           <AppRoutes />
           <PlayerCompact toggleModal={handleToggleModal} />
           <PlayerModal isVisible={showModal} toggleModal={handleToggleModal} />
-          <MusicActionSheet />
+          <AppActionSheet />
         </NavigationContainer>
       </PlayerProvider>
     );
