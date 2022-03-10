@@ -10,6 +10,7 @@ const CreatePlaylistModal = ({ modalVisibility, setModalVisibility }) => {
   const handleCreateAlbum = () => {
     realm.createAlbum({ name: playlistName, audioList: [] });
     setPlaylistName('');
+    setModalVisibility(false);
   };
 
   return (
