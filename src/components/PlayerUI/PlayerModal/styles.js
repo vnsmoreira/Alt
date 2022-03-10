@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
     position: 'absolute',
-    bottom: 35,
+    bottom: 45,
   },
   mainControls: {
     flex: 1,
