@@ -1,7 +1,12 @@
 import { useState, useContext, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styles from './styles';
-import { AntDesign, SimpleLineIcons, MaterialIcons } from '@expo/vector-icons';
+import {
+  AntDesign,
+  SimpleLineIcons,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
 import ProgressCircle from 'react-native-progress-circle';
 import { downloadFile, deleteFile } from '../../modules/download';
 import { PlayerContext } from '../../contexts/player';
@@ -122,13 +127,22 @@ const MusicItem = ({ item, index, queue, updateMusicItem }) => {
   };
 
   const handleOpenOptions = () => {
-    SheetManager.show('music-options', {
-      id,
-      isDownloaded,
-      actions: {
-        delete: handleDeleteAudio,
-      },
-    });
+    const actionSheetConfig = {
+      actions: [
+        {
+          title: 'deletar audio',
+          icon: (size, color) => <MaterialCommunityIcons name="delete" size={size} color={color} />,
+          callback: () => handleDeleteAudio(),
+        },
+        {
+          title: 'editar audio',
+          icon: (size, color) => <MaterialIcons name="edit" size={size} color={color} />,
+          callback: () => {},
+        },
+      ],
+    };
+
+    SheetManager.show('app-actionsheet', actionSheetConfig);
   };
 
   return (
