@@ -91,28 +91,30 @@ export const deleteAlbumCollection = async () => {
 };
 
 /**
- * Setup a listener to be called on audio collection changes.
- * @param {function} callback  The callback to be called on changes.
+ * Setup a listener to be called on a selected collection changes.
+ * @param {string} collectionName The collection name to listen for changes.
+ * @param {function} onChangesCallback  The callback to be called on changes.
  */
-export const onAudioCollectionUpdate = async callback => {
+export const addCollectionListener = async (collectionName, onChangesCallback) => {
   const realm = await getRealm();
-  const audioCollection = realm.objects('Audio');
+  const collection = realm.objects(collectionName);
 
-  const onUpdate = (audios, changes) => callback(audios, changes);
-  audioCollection.addListener(onUpdate);
+  const handleOnChanges = (audios, changes) => onChangesCallback(audios, changes);
+  collection.addListener(handleOnChanges);
 };
 
 /**
- * Setup a listener to be called on a specific audio change.
- * @param {function} callback  The callback to be called on changes.
+ * Setup a listener to be called on a specific object change.
+ * @param {string} objectType The object type name.
  * @param {string} id The object id to be checked for changes.
+ * @param {function} callback  The callback to be called on changes.
  */
-export const onAudioObjectUpdate = async (callback, id) => {
+export const addObjectListener = async (objectType, objectId, onChangesCallback) => {
   const realm = await getRealm();
-  const audio = realm.objectForPrimaryKey('Audio', id);
+  const audio = realm.objectForPrimaryKey(objectType, objectId);
 
   if (!audio) return;
 
-  const onUpdate = (audio, changes) => callback(audio, changes);
-  audio.addListener(onUpdate);
+  const handleOnChanges = (audio, changes) => onChangesCallback(audio, changes);
+  audio.addListener(handleOnChanges);
 };
