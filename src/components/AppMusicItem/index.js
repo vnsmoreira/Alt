@@ -68,7 +68,7 @@ const MusicItem = ({ item, index, queue, updateMusicItem }) => {
       const audio = await realm.getAudio(id);
 
       if (audio) {
-        realm.onAudioObjectUpdate(setupAudioUri, id);
+        realm.addObjectListener('Audio', id, setupAudioUri);
       } else {
         await setupAudioUri();
       }
@@ -108,7 +108,7 @@ const MusicItem = ({ item, index, queue, updateMusicItem }) => {
         const audioInfo = getAudioInfo(item, audioLocalUri);
 
         await realm.saveAudio(audioInfo);
-        realm.onAudioObjectUpdate(setupAudioUri, id);
+        realm.addObjectListener('Audio', id, setupAudioUri);
         setIsDownloading(false);
       }
     } catch (error) {
