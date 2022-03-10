@@ -1,10 +1,29 @@
-import { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import styles from './styles';
-import { FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
+import { FontAwesome, SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { SheetManager } from 'react-native-actions-sheet';
+import * as realm from '../../services/realm';
 
-const AlbumItem = ({ name, audioList = [] }) => {
+const AlbumItem = ({ id, name, audioList = [] }) => {
   const numberOfMusicsOnAlbum = audioList.length;
+
+  const handleDeleteAlbum = async () => {
+    await realm.deleteAlbum(id);
+  };
+
+  const handleOpenOptions = () => {
+    const actionSheetConfig = {
+      actions: [
+        {
+          title: 'deletar album',
+          icon: (size, color) => <MaterialCommunityIcons name="delete" size={size} color={color} />,
+          callback: () => handleDeleteAlbum(),
+        },
+      ],
+    };
+
+    SheetManager.show('app-actionsheet', actionSheetConfig);
+  };
 
   return (
     <View style={styles.musicItem}>
@@ -25,7 +44,7 @@ const AlbumItem = ({ name, audioList = [] }) => {
       </TouchableOpacity>
 
       <View style={styles.optionsContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleOpenOptions}>
           <SimpleLineIcons style={{ padding: 20 }} name="options-vertical" size={14} color="gray" />
         </TouchableOpacity>
       </View>
