@@ -1,17 +1,24 @@
-import { useState } from 'react';
-import { View, TouchableOpacity, Modal, TextInput } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { View, TouchableOpacity, Modal, TextInput, Keyboard } from 'react-native';
 import styles from './styles';
 import * as realm from '../../../../services/realm';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const CreatePlaylistModal = ({ modalVisibility, setModalVisibility }) => {
   const [playlistName, setPlaylistName] = useState('');
+  const inputRef = useRef(null);
 
   const handleCreateAlbum = () => {
     realm.createAlbum({ name: playlistName, audioList: [] });
     setPlaylistName('');
     setModalVisibility(false);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 100);
+  });
 
   return (
     <Modal
@@ -33,6 +40,7 @@ const CreatePlaylistModal = ({ modalVisibility, setModalVisibility }) => {
           }}
         >
           <TextInput
+            ref={inputRef}
             selectionColor="purple"
             style={{
               flexDirection: 'row',
