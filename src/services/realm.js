@@ -69,7 +69,9 @@ export const createAlbum = async album => {
 
 export const getAlbum = async id => {
   const realm = await getRealm();
-  const album = realm.objectForPrimaryKey('Album', id);
+
+  const albumId = new Realm.BSON.UUID(id);
+  const album = realm.objectForPrimaryKey('Album', albumId);
 
   return album;
 };
