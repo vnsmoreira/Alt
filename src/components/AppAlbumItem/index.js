@@ -3,9 +3,16 @@ import styles from './styles';
 import { FontAwesome, SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { SheetManager } from 'react-native-actions-sheet';
 import * as realm from '../../services/realm';
+import { useNavigation } from '@react-navigation/native';
 
-const AlbumItem = ({ id, name, audioList = [] }) => {
+const AlbumItem = ({ id, name, audioList }) => {
   const numberOfMusicsOnAlbum = audioList.length;
+
+  const navigation = useNavigation();
+
+  const handleOpenAlbum = () => {
+    navigation.navigate('Playlist', { id: id.toString(), name });
+  };
 
   const handleDeleteAlbum = async () => {
     await realm.deleteAlbum(id);
@@ -27,7 +34,7 @@ const AlbumItem = ({ id, name, audioList = [] }) => {
 
   return (
     <View style={styles.musicItem}>
-      <TouchableOpacity style={styles.presentationContainer}>
+      <TouchableOpacity style={styles.presentationContainer} onPress={handleOpenAlbum}>
         <View style={styles.thumbnailContainer}>
           <FontAwesome name="folder" size={40} color="gray" />
         </View>
