@@ -35,6 +35,7 @@ export const PlayerProvider = props => {
   const [loopingMode, setLoopingMode] = useState('queue');
   const [currentAudioId, setCurrentAudioId] = useState('');
   const [currentAudioInfo, setCurrentAudioInfo] = useState({});
+  const [showPlayerUI, setShowPlayerUI] = useState(false);
 
   const trackplayerStateSetters = {
     setPlaying,
@@ -103,6 +104,14 @@ export const PlayerProvider = props => {
     TrackPlayer.seekTo(time);
   };
 
+  player.showUI = () => {
+    setShowPlayerUI(true);
+  };
+
+  player.hideUI = () => {
+    setShowPlayerUI(false);
+  };
+
   return (
     <PlayerContext.Provider
       value={{
@@ -112,6 +121,7 @@ export const PlayerProvider = props => {
         loopingMode,
         currentAudioId,
         currentAudioInfo,
+        showPlayerUI
       }}
     >
       {props.children}
