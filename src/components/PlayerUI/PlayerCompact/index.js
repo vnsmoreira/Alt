@@ -6,7 +6,7 @@ import PlayButton from '../components/PlayButton';
 import LoopingButton from '../components/LoopingButton';
 import styles from './styles';
 
-const PlayerCompact = ({ toggleModal }) => {
+const PlayerCompact = () => {
   const { player, playing, loopingMode, currentAudioInfo } = useContext(PlayerContext);
   const progress = useProgress();
   const [progressPercentage, setProgressPercentage] = useState(0);
@@ -22,7 +22,7 @@ const PlayerCompact = ({ toggleModal }) => {
         <View style={{ ...styles.progress, width: `${progressPercentage}%` }}></View>
       </View>
       <View style={styles.playerWrapper}>
-        <TouchableOpacity onPress={toggleModal} style={{ width: 240, flexDirection: 'row' }}>
+        <TouchableOpacity onPress={player.showUI} style={{ width: 240, flexDirection: 'row' }}>
           <View style={styles.thumbnailContainer}>
             <Image style={styles.thumbnail} source={{ uri: currentAudioInfo.thumbnailUri }} />
           </View>

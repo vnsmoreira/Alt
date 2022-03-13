@@ -11,10 +11,13 @@ import SkipNextButton from '../components/SkipNextButton';
 import PlayerSeekbar from '../components/PlayerSeekbar';
 import ShareButton from '../components/ShareButton';
 
-const PlayerUI = ({ isVisible, toggleModal }) => {
-  const { player, playing, loopingMode, currentAudioInfo } = useContext(PlayerContext);
+const PlayerUI = () => {
+  const { player, playing, loopingMode, currentAudioInfo, showPlayerUI } =
+    useContext(PlayerContext);
+
   const { duration, position } = useProgress();
   const [progressPercentage, setProgressPercentage] = useState(0);
+  
   const thumbnailUri = currentAudioInfo.thumbnailUri;
 
   useEffect(() => {
@@ -33,8 +36,8 @@ const PlayerUI = ({ isVisible, toggleModal }) => {
   return (
     <Modal
       statusBarTranslucent
-      onRequestClose={() => toggleModal()}
-      visible={isVisible}
+      onRequestClose={player.hideUI}
+      visible={showPlayerUI}
       animationType="slide"
       style={styles.playerModal}
     >
@@ -46,7 +49,7 @@ const PlayerUI = ({ isVisible, toggleModal }) => {
         <View style={{ backgroundColor: thumbnailUri ? 'rgba(0,0,0,.3)' : '#141414' }}>
           <View style={styles.playerWrapper}>
             <View style={styles.playerHeader}>
-              <TouchableOpacity onPress={toggleModal}>
+              <TouchableOpacity onPress={player.hideUI}>
                 <Entypo name="chevron-thin-down" size={30} color="#ccc" />
               </TouchableOpacity>
             </View>
