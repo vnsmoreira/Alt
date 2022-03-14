@@ -67,6 +67,31 @@ export const createAlbum = async album => {
   });
 };
 
+export const addAudioToAlbum = async (albumId, audio) => {
+  const realm = await getRealm();
+
+  const albumUUID = new Realm.BSON.UUID(albumId);
+  const album = realm.objectForPrimaryKey('Album', albumUUID);
+
+  realm.write(() => {
+    album.audioList.push(audio);
+  });
+};
+
+export const deleteAudioFromAlbum = async (albumId, audioId) => {
+  const realm = await getRealm();
+
+  const albumUUID = new Realm.BSON.UUID(albumId);
+  const album = realm.objectForPrimaryKey('Album', albumUUID);
+
+  const deleteIndex = album.audioList.findIndex(audio => audio.id == audioId);
+  console.log(deleteIndex);
+
+  realm.write(() => {
+    album.audioList.splice(deleteIndex, 1);
+  });
+};
+
 export const getAlbum = async id => {
   const realm = await getRealm();
 
