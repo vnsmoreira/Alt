@@ -2,8 +2,14 @@ export default {
   name: 'Album',
   primaryKey: 'id',
   properties: {
-    id: { type: 'uuid', indexed: true },
+    id: {
+      type: 'uuid',
+      indexed: true,
+    },
     name: 'string',
-    audioList: 'string[]',
+    audioList: {
+      type: 'list',
+      objectType: 'Audio',
+    },
   },
 };
